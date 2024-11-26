@@ -16,7 +16,7 @@ import EquipmentList from './components/EquipmentList';
 import Login from './components/Login';
 import Register from './components/Register';
 import SummaryPage from './components/SummaryPage';
-
+//test tesaluna
 function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
     const savedLoggedIn = localStorage.getItem('loggedIn');
