@@ -46,21 +46,22 @@ function App() {
     };
 
     return (
-      <div>
+      <div className="center-container">
         <h2>Welcome to the LIC Management System</h2>
         <p>Select a section from the navigation bar to get started!</p>
         <p>Do you want to start booking? Press the Start button.</p>
         <button onClick={handleStartBooking} className="start-booking-button">
-          Start Booking
-        </button>
-      </div>
+      Start Booking
+  </button>
+</div>
+
     );
   };
 
   return (
     <Router>
       <div className="App">
-        <header className="header">
+      <header className="header" style={{ backgroundColor: '#8C363C' }}>
           <h1>LIC Management System</h1>
           <nav className="nav-buttons">
             <Link to="/">Home</Link>

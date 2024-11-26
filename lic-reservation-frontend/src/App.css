@@ -14,7 +14,7 @@
 
 .nav-buttons a {
   text-decoration: none;
-  color: #333;
+  color: white;
   padding: 0.5rem 1rem;
   border: 1px solid transparent;
   border-radius: 5px;
@@ -37,7 +37,7 @@
 }
 
 h1 {
-  color: #333;
+  color: white;
 }
 
 button {
@@ -53,4 +53,12 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center; /* Center-align the text inside the div */
 }
