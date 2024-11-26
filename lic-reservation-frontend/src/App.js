@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
 import './App.css';
-//import './App.css';
 
-// Import components - Test Angelo
+// Import components
 import CreateStudent from './components/CreateStudent';
 import StudentList from './components/StudentList';
 import CreateReservation from './components/CreateReservation';
@@ -16,6 +15,8 @@ import CreateEquipment from './components/CreateEquipment';
 import EquipmentList from './components/EquipmentList';
 import Login from './components/Login';
 import Register from './components/Register';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 import SummaryPage from './components/SummaryPage';
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
             {loggedIn && <Link to="/summary">Summary</Link>}
             {!loggedIn && <Link to="/login">Login</Link>}
             {!loggedIn && <Link to="/register">Register</Link>}
+            {!loggedIn && <Link to="/forgot-password">Forgot Password</Link>}
             {loggedIn && (
               <button onClick={handleLogout} className="logout-button">
                 Logout
@@ -85,6 +87,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login onLoginSuccess={handleLogin} />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Protected routes */}
           <Route
@@ -138,7 +142,6 @@ function App() {
                 <div>
                   <CreatePaymentMethod />
                   <PaymentMethodList />
-
                 </div>
               </ProtectedRoute>
             }

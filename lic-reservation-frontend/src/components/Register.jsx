@@ -1,59 +1,59 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [userDetails, setUserDetails] = useState({ email: '', username: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Regex for validating email
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|cit\.edu)$/;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserDetails({ ...userDetails, [name]: value });
+  };
 
-  const handleRegister = () => {
-    // Check if email matches the required pattern
-    if (!emailRegex.test(email)) {
-      setErrorMessage(
-        'Invalid email. Only emails ending with "@gmail" or "@cit.edu" are allowed.'
-      );
-      return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+
+    try {
+      await axios.post('/api/auth/register', userDetails);
+      navigate('/login'); // Redirect to login after successful registration
+    } catch (error) {
+      setErrorMessage('Registration failed. Please try again.');
     }
-
-    // Proceed with registration if validation passes
-    axios.post('/api/auth/register', { username, email, password })
-      .then(response => {
-        alert(response.data);
-        navigate('/login');
-      })
-      .catch(error => alert(error.response.data));
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <h2>Register</h2>
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        value={userDetails.username}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={userDetails.email}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={userDetails.password}
+        onChange={handleInputChange}
+        required
+      />
+      <button type="submit">Register</button>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <input 
-        type="text" 
-        placeholder="Username" 
-        value={username} 
-        onChange={e => setUsername(e.target.value)} 
-      />
-      <input 
-        type="email" 
-        placeholder="Email" 
-        value={email} 
-        onChange={e => setEmail(e.target.value)} 
-      />
-      <input 
-        type="password" 
-        placeholder="Password" 
-        value={password} 
-        onChange={e => setPassword(e.target.value)} 
-      />
-      <button onClick={handleRegister}>Register</button>
-    </div>
+    </form>
   );
 };
 
