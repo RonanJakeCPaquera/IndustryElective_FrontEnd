@@ -47,18 +47,44 @@ function App() {
       navigate('/student-management');
     };
 
-    return (
-      <div className="center-container">
-        <h2>Welcome to the LIC Management System</h2>
-        <p>Select a section from the navigation bar to get started!</p>
-        <p>Do you want to start booking? Press the Start button.</p>
-        <button onClick={handleStartBooking} className="start-booking-button">
-      Start Booking
-  </button>
-</div>
+    const containerStyle = {
+      backgroundImage: "url('/homebg.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      height: "100vh", // Full viewport height
+      display: "flex",
+      justifyContent: "center", // Center horizontally
+      alignItems: "center", // Center vertically
+      textAlign: "center",
+    };
+  
+    const contentStyle = {
+      color: '#FFFFFF',
+      padding: "20px",
+      borderRadius: "10px",
+    };
 
-    );
-  };
+    const headingStyle = {
+      fontSize: "2.5rem", // Larger font size for the heading
+    };
+
+    const paragraphStyle = {
+      fontSize: "1.2rem", // Slightly larger font size for paragraphs
+    };
+
+    return (
+      <div style={containerStyle}>
+      <div style={contentStyle}>
+        <h2 style={headingStyle}>Welcome to the LIC Management System</h2>
+        <p style={paragraphStyle}>Select a section from the navigation bar to get started!</p>
+        <p style={paragraphStyle}>Do you want to start booking? Press the Start button.</p>
+        <button onClick={handleStartBooking} className="start-booking-button">
+          Start Booking
+        </button>
+      </div>
+    </div>
+  );
+};
 
   return (
     <Router>

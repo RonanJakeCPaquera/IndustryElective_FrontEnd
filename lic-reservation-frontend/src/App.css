@@ -54,11 +54,3 @@ button {
 button:hover {
   background-color: #0056b3;
 }
-
-.center-container {
-  display: flex;
-  flex-direction: column; /* Stack children vertically */
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
-  text-align: center; /* Center-align the text inside the div */
-}
