@@ -5,7 +5,7 @@ const PhotoGallery = () => {
   // Paths to images stored in the public folder
   const images = [
     '/images/photo1.jpg',  // Corrected path
-    '/images/photo2.jpg',
+    // '/images/photo2.jpg',
     '/images/photo3.jpg',
     '/images/photo4.jpg',
     '/images/photo5.jpg',
