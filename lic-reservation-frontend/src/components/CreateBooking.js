@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './CreateBooking.css';
-
+ 
 function CreateBooking() {
   const [bookingData, setBookingData] = useState({
     bookingDate: '',
@@ -18,16 +18,16 @@ function CreateBooking() {
   });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+ 
     // Validate the email domain
     if (!bookingData.email.endsWith('@cit.edu')) {
       setMessage('Invalid email domain. Use @cit.edu email.');
       return;
     }
-
+ 
     axios
       .post('/bookings/createBooking', bookingData)
       .then(() => {
@@ -38,7 +38,7 @@ function CreateBooking() {
         setMessage('Error creating booking');
       });
   };
-
+ 
   return (
     <div className="create-booking-container">
       <h2>Create Booking</h2>
@@ -51,7 +51,7 @@ function CreateBooking() {
           onChange={(e) => setBookingData({ ...bookingData, name: e.target.value })}
           required
         />
-
+ 
         <label>Contact Number:</label>
         <input
           type="tel"
@@ -60,7 +60,7 @@ function CreateBooking() {
           onChange={(e) => setBookingData({ ...bookingData, contactNumber: e.target.value })}
           required
         />
-
+ 
         <label>Email (@cit.edu only):</label>
         <input
           type="email"
@@ -69,7 +69,7 @@ function CreateBooking() {
           onChange={(e) => setBookingData({ ...bookingData, email: e.target.value })}
           required
         />
-
+ 
         <label>Payment Amount:</label>
         <input
           type="number"
@@ -79,7 +79,7 @@ function CreateBooking() {
           min="0"
           required
         />
-
+ 
         <label>Booking Date:</label>
         <input
           type="date"
@@ -87,7 +87,7 @@ function CreateBooking() {
           onChange={(e) => setBookingData({ ...bookingData, bookingDate: e.target.value })}
           required
         />
-
+ 
         <label>Time to Come In:</label>
         <input
           type="time"
@@ -95,7 +95,7 @@ function CreateBooking() {
           onChange={(e) => setBookingData({ ...bookingData, startTime: e.target.value })}
           required
         />
-
+ 
         <label>Time to End Out:</label>
         <input
           type="time"
@@ -103,7 +103,7 @@ function CreateBooking() {
           onChange={(e) => setBookingData({ ...bookingData, endTime: e.target.value })}
           required
         />
-
+ 
         <label>Booking Type:</label>
         <select
           value={bookingData.bookingType}
@@ -118,13 +118,13 @@ function CreateBooking() {
           <option value="Event">Event</option>
           <option value="Other">Other</option>
         </select>
-
+ 
         <button type="submit">Next</button>
       </form>
-
+ 
       {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
     </div>
   );
 }
-
+ 
 export default CreateBooking;

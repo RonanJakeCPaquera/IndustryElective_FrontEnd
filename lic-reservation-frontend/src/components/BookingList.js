@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+ 
 const BookingList = () => {
     const [bookings, setBookings] = useState([]);
     const [counters, setCounters] = useState({});
     const [editingId, setEditingId] = useState(null); // Tracks the booking being edited
     const [editingBooking, setEditingBooking] = useState(null); // Stores the current booking details being edited
-
+ 
     useEffect(() => {
         fetchBookings();
     }, []);
-
+ 
     const fetchBookings = async () => {
         try {
             const response = await axios.get('/bookings/getAllBookings');
             const bookingsData = response.data;
             setBookings(bookingsData);
-
+ 
             // Initialize counters with unique IDs from fetched bookings
             const initialCounters = {};
             bookingsData.forEach((booking, index) => {
@@ -27,14 +27,14 @@ const BookingList = () => {
             console.error('Error fetching bookings:', error);
         }
     };
-
+ 
     const incrementCounter = (bookingId) => {
         setCounters((prevCounters) => ({
             ...prevCounters,
             [bookingId]: prevCounters[bookingId] + 1,
         }));
     };
-
+ 
     const updateBooking = async (id, updatedDetails) => {
         try {
             await axios.put(`/bookings/updateBooking/${id}`, updatedDetails);
@@ -44,7 +44,7 @@ const BookingList = () => {
             console.error('Error updating booking:', error);
         }
     };
-
+ 
     const deleteBooking = async (id) => {
         try {
             await axios.delete(`/bookings/deleteBooking/${id}`);
@@ -53,40 +53,40 @@ const BookingList = () => {
             console.error('Error deleting booking:', error);
         }
     };
-
+ 
     const formatDateTime = (dateString, timeString) => {
         const date = new Date(dateString);
         const time = new Date(`1970-01-01T${timeString}`);
-        
+       
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = date.toLocaleDateString(undefined, options);
-        
+       
         const hours = time.getHours();
         const minutes = time.getMinutes();
         const ampm = hours >= 12 ? 'pm' : 'am';
         const formattedHours = hours % 12 || 12; // Convert to 12-hour format
         const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
-        
+       
         return `${formattedDate} at ${formattedHours}:${formattedMinutes} ${ampm}`;
     };
-
+ 
     const startEdit = (booking) => {
         setEditingId(booking.bookingId); // Set the ID of the booking being edited
         setEditingBooking({ ...booking }); // Clone the booking into the editing state
     };
-
+ 
     const handleEditChange = (field, value) => {
         setEditingBooking((prev) => ({
             ...prev,
             [field]: value, // Update the specific field
         }));
     };
-
+ 
     const cancelEdit = () => {
         setEditingId(null); // Exit edit mode
         setEditingBooking(null); // Clear editing state
     };
-
+ 
     return (
         <div>
             <h1>Booking System</h1>
@@ -142,7 +142,7 @@ const BookingList = () => {
                                 <p><strong>Status:</strong> {booking.status}</p>
                                 <button onClick={() => startEdit(booking)}>Edit</button>
                                 <button onClick={() => deleteBooking(booking.bookingId)}>Delete</button>
-                                <button 
+                                <button
                                     onClick={() => {
                                         updateBooking(booking.bookingId, { ...booking, status: 'Completed' });
                                         incrementCounter(booking.bookingId); // Increment specific booking counter
@@ -158,5 +158,5 @@ const BookingList = () => {
         </div>
     );
 };
-
+ 
 export default BookingList;

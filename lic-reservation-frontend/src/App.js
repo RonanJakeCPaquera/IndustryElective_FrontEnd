@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
 import './App.css';
-
+ 
 // Import components
 import CreateStudent from './components/CreateStudent';
 import StudentList from './components/StudentList';
@@ -18,125 +18,84 @@ import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import SummaryPage from './components/SummaryPage';
-<<<<<<< HEAD
-//test tesaluna
-=======
 import PhotoGallery from './components/PhotoGallery'; // Import the Photo Gallery component
-
->>>>>>> eda8efd55b20f7a2fc06d9f6265a610dc4d98eea
+ 
 function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
     const savedLoggedIn = localStorage.getItem('loggedIn');
     return savedLoggedIn === 'true'; // Convert string to boolean
   });
-
+ 
   const userName = localStorage.getItem('userName') || 'Guest';
-
+ 
   const handleLogin = () => {
     setLoggedIn(true);
     localStorage.setItem('loggedIn', 'true');
   };
-
+ 
   const handleLogout = () => {
     setLoggedIn(false);
     localStorage.setItem('loggedIn', 'false');
     localStorage.removeItem('userName');
     alert('You have been logged out.');
   };
-
+ 
   const ProtectedRoute = ({ children }) => {
     return loggedIn ? children : <Navigate to="/login" />;
   };
-
+ 
   const Home = () => {
     const navigate = useNavigate();
-
+ 
     const handleStartBooking = () => {
       navigate('/student-management');
     };
-
-    const containerStyle = {
-      backgroundImage: "url('/homebg.jpg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      height: "100vh", // Full viewport height
-      display: "flex",
-      justifyContent: "center", // Center horizontally
-      alignItems: "center", // Center vertically
-      textAlign: "center",
-    };
-  
-    const contentStyle = {
-      color: '#FFFFFF',
-      padding: "20px",
-      borderRadius: "10px",
-    };
-
-    const headingStyle = {
-      fontSize: "2.5rem", // Larger font size for the heading
-    };
-
-    const paragraphStyle = {
-      fontSize: "1.2rem", // Slightly larger font size for paragraphs
-    };
-
+ 
     return (
-<<<<<<< HEAD
-      <div style={containerStyle}>
-      <div style={contentStyle}>
-        <h2 style={headingStyle}>Welcome to the LIC Management System</h2>
-        <p style={paragraphStyle}>Select a section from the navigation bar to get started!</p>
-        <p style={paragraphStyle}>Do you want to start booking? Press the Start button.</p>
-        <button onClick={handleStartBooking} className="start-booking-button">
-          Start Booking
-        </button>
-=======
-      <div className="home-container">
-        <header className="hero-banner">
-          <h1>Welcome to LIC Management System</h1>
-          <p>
+<div className="home-container">
+<header className="hero-banner">
+<h1>Welcome to LIC Management System</h1>
+<p>
             Simplify reservation management for students and staff with our easy-to-use system. Track equipment, manage
             bookings, and ensure efficient operations!
-          </p>
-          <button onClick={handleStartBooking} className="cta-button">
+</p>
+<button onClick={handleStartBooking} className="cta-button">
             Start Booking
-          </button>
-        </header>
-        <section className="features">
-          <h2>Key Features</h2>
-          <div className="features-list">
-            <div className="feature-card">
-              <h3>Reservation Tracking</h3>
-              <p>Real-time dashboard to manage resources efficiently.</p>
-            </div>
-            <div className="feature-card">
-              <h3>Usage Reports</h3>
-              <p>Generate statistics and notifications for accountability.</p>
-            </div>
-            <div className="feature-card">
-              <h3>Customization</h3>
-              <p>Adaptable system to align with LIC librarian requirements.</p>
-            </div>
-          </div>
-        </section>
+</button>
+</header>
+<section className="features">
+<h2>Key Features</h2>
+<div className="features-list">
+<div className="feature-card">
+<h3>Reservation Tracking</h3>
+<p>Real-time dashboard to manage resources efficiently.</p>
+</div>
+<div className="feature-card">
+<h3>Usage Reports</h3>
+<p>Generate statistics and notifications for accountability.</p>
+</div>
+<div className="feature-card">
+<h3>Customization</h3>
+<p>Adaptable system to align with LIC librarian requirements.</p>
+</div>
+</div>
+</section>
         {/* Add the PhotoGallery component */}
-        <section className="photo-gallery-section">
-          <h2>Explore Our Gallery</h2>
-          <PhotoGallery />
-        </section>
->>>>>>> eda8efd55b20f7a2fc06d9f6265a610dc4d98eea
-      </div>
-    </div>
-  );
-};
-
+<section className="photo-gallery-section">
+<h2>Explore Our Gallery</h2>
+<PhotoGallery />
+</section>
+</div>
+    );
+  };
+ 
   return (
-    <Router>
-      <div className="App">
-      <header className="header" style={{ backgroundColor: '#8C363C' }}>
-          <h1>LIC Management System</h1>
-          <nav className="nav-buttons">
-            <Link to="/">Home</Link>
+<Router>
+<div className="App">
+<header className="header">
+<h1>LIC Management System</h1>
+<nav className="nav-buttons">
+<Link to="/">Home</Link>
             {loggedIn && <span className="user-greeting">Hello, {userName}!</span>}
             {loggedIn && <Link to="/student-management">Student Management</Link>}
             {loggedIn && <Link to="/reservation-management">Reservation Management</Link>}
@@ -148,88 +107,88 @@ function App() {
             {!loggedIn && <Link to="/register">Register</Link>}
             {!loggedIn && <Link to="/forgot-password">Forgot Password</Link>}
             {loggedIn && (
-              <button onClick={handleLogout} className="logout-button">
+<button onClick={handleLogout} className="logout-button">
                 Logout
-              </button>
+</button>
             )}
-          </nav>
-        </header>
-        <Routes>
+</nav>
+</header>
+<Routes>
           {/* Public routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login onLoginSuccess={handleLogin} />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-
+<Route path="/" element={<Home />} />
+<Route path="/login" element={<Login onLoginSuccess={handleLogin} />} />
+<Route path="/register" element={<Register />} />
+<Route path="/forgot-password" element={<ForgotPassword />} />
+<Route path="/reset-password" element={<ResetPassword />} />
+ 
           {/* Protected routes */}
-          <Route
+<Route
             path="/student-management"
             element={
-              <ProtectedRoute>
-                <div>
-                  <CreateStudent />
-                  <StudentList />
-                </div>
-              </ProtectedRoute>
+<ProtectedRoute>
+<div>
+<CreateStudent />
+<StudentList />
+</div>
+</ProtectedRoute>
             }
           />
-          <Route
+<Route
             path="/reservation-management"
             element={
-              <ProtectedRoute>
-                <div>
-                  <CreateReservation />
-                  <ReservationList />
-                </div>
-              </ProtectedRoute>
+<ProtectedRoute>
+<div>
+<CreateReservation />
+<ReservationList />
+</div>
+</ProtectedRoute>
             }
           />
-          <Route
+<Route
             path="/booking-management"
             element={
-              <ProtectedRoute>
-                <div>
-                  <CreateBooking />
-                  <BookingList />
-                </div>
-              </ProtectedRoute>
+<ProtectedRoute>
+<div>
+<CreateBooking />
+<BookingList />
+</div>
+</ProtectedRoute>
             }
           />
-          <Route
+<Route
             path="/equipment-management"
             element={
-              <ProtectedRoute>
-                <div>
-                  <CreateEquipment />
-                  <EquipmentList />
-                </div>
-              </ProtectedRoute>
+<ProtectedRoute>
+<div>
+<CreateEquipment />
+<EquipmentList />
+</div>
+</ProtectedRoute>
             }
           />
-          <Route
+<Route
             path="/payment-method-management"
             element={
-              <ProtectedRoute>
-                <div>
-                  <CreatePaymentMethod />
-                  <PaymentMethodList />
-                </div>
-              </ProtectedRoute>
+<ProtectedRoute>
+<div>
+<CreatePaymentMethod />
+<PaymentMethodList />
+</div>
+</ProtectedRoute>
             }
           />
-          <Route
+<Route
             path="/summary"
             element={
-              <ProtectedRoute>
-                <SummaryPage />
-              </ProtectedRoute>
+<ProtectedRoute>
+<SummaryPage />
+</ProtectedRoute>
             }
           />
-        </Routes>
-      </div>
-    </Router>
+</Routes>
+</div>
+</Router>
   );
 }
-
+ 
 export default App;
