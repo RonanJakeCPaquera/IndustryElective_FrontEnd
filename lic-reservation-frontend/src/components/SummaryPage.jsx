@@ -9,22 +9,22 @@ import { useNavigate } from 'react-router-dom';
 
 const SummaryPage = () => {
     const [activeTab, setActiveTab] = useState('bookings');
-    const [tabCounts, setTabCounts] = useState({
-        bookings: 0,
-        equipment: 0,
-        payments: 0,
-        reservations: 0,
-        students: 0,
-    });
+    // const [tabCounts, setTabCounts] = useState({
+    //     bookings: 0,
+    //     equipment: 0,
+    //     payments: 0,
+    //     reservations: 0,
+    //     students: 0,
+    // });
 
     const navigate = useNavigate();
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        setTabCounts((prevCounts) => ({
-            ...prevCounts,
-            [tab]: prevCounts[tab] + 1,
-        }));
+        // setTabCounts((prevCounts) => ({
+        //     ...prevCounts,
+        //     [tab]: prevCounts[tab] + 1,
+        // }));
     };
 
     const handleEdit = (item) => {
@@ -71,31 +71,31 @@ const SummaryPage = () => {
                     className={`nav-button ${activeTab === 'bookings' ? 'active' : ''}`}
                     onClick={() => handleTabChange('bookings')}
                 >
-                    Bookings ({tabCounts.bookings})
+                    Bookings 
                 </button>
                 <button
                     className={`nav-button ${activeTab === 'equipment' ? 'active' : ''}`}
                     onClick={() => handleTabChange('equipment')}
                 >
-                    Equipment ({tabCounts.equipment})
+                    Equipment 
                 </button>
                 <button
                     className={`nav-button ${activeTab === 'payments' ? 'active' : ''}`}
                     onClick={() => handleTabChange('payments')}
                 >
-                    Payments ({tabCounts.payments})
+                    Payments 
                 </button>
                 <button
                     className={`nav-button ${activeTab === 'reservations' ? 'active' : ''}`}
                     onClick={() => handleTabChange('reservations')}
                 >
-                    Reservations ({tabCounts.reservations})
+                    Reservations 
                 </button>
                 <button
                     className={`nav-button ${activeTab === 'students' ? 'active' : ''}`}
                     onClick={() => handleTabChange('students')}
                 >
-                    Students ({tabCounts.students})
+                    Students 
                 </button>
             </nav>
             <main className="summary-content">
