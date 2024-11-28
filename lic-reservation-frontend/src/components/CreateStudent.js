@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './CreateStudent.css';
 
 function CreateStudent() {
   const [studentData, setStudentData] = useState({ name: '', program: '', year: '' });
@@ -22,14 +23,15 @@ function CreateStudent() {
   };
 
   return (
-    <div>
+    <div className="create-student-container">
       <h2>Create Student</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="create-student-form" onSubmit={handleSubmit}>
         <label>Name:</label>
         <input
           type="text"
           value={studentData.name}
           onChange={(e) => setStudentData({ ...studentData, name: e.target.value })}
+          placeholder="Enter student name"
           required
         />
         <label>Program:</label>
@@ -37,6 +39,7 @@ function CreateStudent() {
           type="text"
           value={studentData.program}
           onChange={(e) => setStudentData({ ...studentData, program: e.target.value })}
+          placeholder="Enter program"
           required
         />
         <label>Year:</label>
@@ -44,11 +47,12 @@ function CreateStudent() {
           type="number"
           value={studentData.year}
           onChange={(e) => setStudentData({ ...studentData, year: e.target.value })}
+          placeholder="Enter year"
           required
         />
         <button type="submit">Next</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
     </div>
   );
 }

@@ -3,7 +3,12 @@ import axios from 'axios';
 
 const StudentList = () => {
     const [students, setStudents] = useState([]);
-    const [counters, setCounters] = useState({});
+    const [editStudentId, setEditStudentId] = useState(null);
+    const [editedStudent, setEditedStudent] = useState({
+        name: '',
+        program: '',
+        year: ''
+    });
 
     useEffect(() => {
         fetchStudents();
@@ -13,20 +18,32 @@ const StudentList = () => {
         const response = await axios.get('/students/getAllStudents');
         const studentData = response.data;
         setStudents(studentData);
-
-        // Initialize counters for each student
-        const initialCounters = {};
-        studentData.forEach((student, index) => {
-            initialCounters[student.studentId] = index + 1; // Start counters at 1
-        });
-        setCounters(initialCounters);
     };
 
-    const incrementCounter = (studentId) => {
-        setCounters((prevCounters) => ({
-            ...prevCounters,
-            [studentId]: prevCounters[studentId] + 1,
-        }));
+    const handleEditClick = (studentId) => {
+        const studentToEdit = students.find(student => student.studentId === studentId);
+        setEditStudentId(studentId);
+        setEditedStudent({
+            name: studentToEdit.name,
+            program: studentToEdit.program,
+            year: studentToEdit.year
+        });
+    };
+
+    const handleUpdate = async () => {
+        const response = await axios.put(`/students/updateStudent/${editStudentId}`, editedStudent);
+        if (response.status === 200) {
+            fetchStudents(); // Reload the students list
+            setEditStudentId(null); // Close the edit form
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedStudent({
+            ...editedStudent,
+            [name]: value
+        });
     };
 
     const deleteStudent = async (id) => {
@@ -40,17 +57,41 @@ const StudentList = () => {
             <ul>
                 {students.map((student) => (
                     <li key={student.studentId}>
-                        <p><strong>({counters[student.studentId] || 1}) Name:</strong> {student.name}</p>
-                        <p><strong>Program:</strong> {student.program}</p>
-                        <p><strong>Year:</strong> {student.year}</p>
-                        <button 
-                            onClick={() => incrementCounter(student.studentId)}
-                        >
-                            Increment
-                        </button>
-                        <button onClick={() => deleteStudent(student.studentId)}>
-                            Delete
-                        </button>
+                        {editStudentId === student.studentId ? (
+                            <div>
+                                <input 
+                                    type="text" 
+                                    name="name"
+                                    value={editedStudent.name}
+                                    onChange={handleChange}
+                                    placeholder="Enter name"
+                                />
+                                <input 
+                                    type="text" 
+                                    name="program"
+                                    value={editedStudent.program}
+                                    onChange={handleChange}
+                                    placeholder="Enter program"
+                                />
+                                <input 
+                                    type="text" 
+                                    name="year"
+                                    value={editedStudent.year}
+                                    onChange={handleChange}
+                                    placeholder="Enter year"
+                                />
+                                <button onClick={handleUpdate}>Update</button>
+                                <button onClick={() => setEditStudentId(null)}>Cancel</button>
+                            </div>
+                        ) : (
+                            <div>
+                                <p><strong>Name:</strong> {student.name}</p>
+                                <p><strong>Program:</strong> {student.program}</p>
+                                <p><strong>Year:</strong> {student.year}</p>
+                                <button onClick={() => handleEditClick(student.studentId)}>Edit</button>
+                                <button onClick={() => deleteStudent(student.studentId)}>Delete</button>
+                            </div>
+                        )}
                     </li>
                 ))}
             </ul>

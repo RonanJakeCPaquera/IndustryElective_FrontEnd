@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './CreatePaymentMethod.css';
 
 function CreatePaymentMethod() {
   const [paymentData, setPaymentData] = useState({
@@ -40,9 +41,9 @@ function CreatePaymentMethod() {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+    <div className="payment-method-container">
       <h2>Create Payment Method</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="payment-method-form" onSubmit={handleSubmit}>
         {/* Payment Amount */}
         <label>Payment Amount:</label>
         <input
@@ -63,38 +64,16 @@ function CreatePaymentMethod() {
           required
         />
 
-        <button
-          type="submit"
-          style={{
-            marginTop: '15px',
-            padding: '10px',
-            backgroundColor: 'orange',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
-        >
+        <button type="submit" className="submit-button">
           Finish
         </button>
       </form>
 
       {/* Feedback Message */}
-      {message && <p style={{ marginTop: '15px', color: 'green' }}>{message}</p>}
+      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
 
       {/* Start Again Button */}
-      <button
-        onClick={handleStartAgain}
-        style={{
-          marginTop: '15px',
-          padding: '10px',
-          backgroundColor: '#ff4d4d',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
-      >
+      <button onClick={handleStartAgain} className="start-again-button">
         Start Again
       </button>
     </div>
