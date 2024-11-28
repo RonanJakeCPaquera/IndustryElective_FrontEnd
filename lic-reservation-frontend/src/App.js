@@ -98,14 +98,14 @@ function App() {
 <Link to="/">Home</Link>
             {loggedIn && <span className="user-greeting">Hello, {userName}!</span>}
             {loggedIn && <Link to="/student-management">Student Management</Link>}
-            {loggedIn && <Link to="/reservation-management">Reservation Management</Link>}
+            {/* {loggedIn && <Link to="/reservation-management">Reservation Management</Link>}
             {loggedIn && <Link to="/booking-management">Booking Management</Link>}
             {loggedIn && <Link to="/equipment-management">Equipment Management</Link>}
-            {loggedIn && <Link to="/payment-method-management">Payment Method Management</Link>}
+            {loggedIn && <Link to="/payment-method-management">Payment Method Management</Link>} */}
             {loggedIn && <Link to="/summary">Summary</Link>}
             {!loggedIn && <Link to="/login">Login</Link>}
-            {!loggedIn && <Link to="/register">Register</Link>}
-            {!loggedIn && <Link to="/forgot-password">Forgot Password</Link>}
+            {/* {!loggedIn && <Link to="/register">Register</Link>}
+            {!loggedIn && <Link to="/forgot-password">Forgot Password</Link>} */}
             {loggedIn && (
 <button onClick={handleLogout} className="logout-button">
                 Logout
