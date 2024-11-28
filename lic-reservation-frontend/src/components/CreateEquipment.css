@@ -1,4 +1,4 @@
-.create-booking-container {
+.create-equipment-container {
     max-width: 600px;
     margin: 0 auto;
     padding: 2rem;
@@ -14,20 +14,19 @@
     color: #343a40;
   }
   
-  .create-booking-form {
+  .create-equipment-form {
     display: flex;
     flex-direction: column;
   }
   
-  .create-booking-form label {
+  .create-equipment-form label {
     font-weight: bold;
     margin-bottom: 0.5rem;
     text-align: left;
     color: #495057;
   }
   
-  .create-booking-form input,
-  .create-booking-form select {
+  .create-equipment-form input {
     padding: 0.8rem;
     margin-bottom: 1rem;
     border: 1px solid #ced4da;
@@ -35,14 +34,13 @@
     font-size: 1rem;
   }
   
-  .create-booking-form input:focus,
-  .create-booking-form select:focus {
+  .create-equipment-form input:focus {
     outline: none;
     border-color: #007bff;
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
   }
   
-  .create-booking-form button {
+  .create-equipment-form button {
     padding: 0.8rem;
     background-color: #007bff;
     color: white;
@@ -53,7 +51,7 @@
     transition: background-color 0.3s ease;
   }
   
-  .create-booking-form button:hover {
+  .create-equipment-form button:hover {
     background-color: #0056b3;
   }
   

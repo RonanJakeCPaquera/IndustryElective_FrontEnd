@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Auth.css';
 
 const Login = ({ onLoginSuccess }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -32,30 +33,42 @@ const Login = ({ onLoginSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={credentials.email}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={credentials.password}
-        onChange={handleInputChange}
-        required
-      />
-      <button type="submit">Login</button>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="button" onClick={() => navigate('/forgot-password')}>
-        Forgot Password?
-      </button>
-    </form>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={credentials.email}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={credentials.password}
+          onChange={handleInputChange}
+          required
+        />
+        <button type="submit">Login</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <button
+          type="button"
+          className="forgot-password-button"
+          onClick={() => navigate('/forgot-password')}
+        >
+          Forgot Password?
+        </button>
+        <p>
+          Don’t have an account?{' '}
+          <span className="auth-link" onClick={() => navigate('/register')}>
+            Register here
+          </span>
+        </p>
+      </form>
+    </div>
   );
 };
 

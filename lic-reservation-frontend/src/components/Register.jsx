@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Auth.css';
 
 const Register = () => {
   const [userDetails, setUserDetails] = useState({ email: '', username: '', password: '' });
@@ -25,35 +26,43 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={userDetails.username}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={userDetails.email}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={userDetails.password}
-        onChange={handleInputChange}
-        required
-      />
-      <button type="submit">Register</button>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-    </form>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Register</h2>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={userDetails.username}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={userDetails.email}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={userDetails.password}
+          onChange={handleInputChange}
+          required
+        />
+        <button type="submit">Register</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <p>
+          Already have an account?{' '}
+          <span className="auth-link" onClick={() => navigate('/login')}>
+            Login here
+          </span>
+        </p>
+      </form>
+    </div>
   );
 };
 

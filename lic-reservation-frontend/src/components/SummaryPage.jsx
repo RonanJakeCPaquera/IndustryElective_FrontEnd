@@ -5,6 +5,7 @@ import PaymentMethodList from './PaymentMethodList';
 import ReservationList from './ReservationList';
 import StudentList from './StudentList';
 import './SummaryPage.css';
+import { useNavigate } from 'react-router-dom';
 
 const SummaryPage = () => {
     const [activeTab, setActiveTab] = useState('bookings');
@@ -16,6 +17,8 @@ const SummaryPage = () => {
         students: 0,
     });
 
+    const navigate = useNavigate();
+
     const handleTabChange = (tab) => {
         setActiveTab(tab);
         setTabCounts((prevCounts) => ({
@@ -24,18 +27,38 @@ const SummaryPage = () => {
         }));
     };
 
+    const handleEdit = (item) => {
+        console.log('Editing:', item);
+        // Implement your edit functionality here
+    };
+
+    const handleDelete = (item) => {
+        console.log('Deleting:', item);
+        // Implement your delete functionality here
+    };
+
+    const handleUpdate = (item) => {
+        console.log('Updating:', item);
+        // Implement your update functionality here
+    };
+
+    const handleStartAgain = () => {
+        // Redirect to the initial page, for example the student management page
+        navigate('/student-management'); 
+    };
+
     const renderActiveTab = () => {
         switch (activeTab) {
             case 'bookings':
-                return <BookingList />;
+                return <BookingList handleEdit={handleEdit} handleDelete={handleDelete} handleUpdate={handleUpdate} />;
             case 'equipment':
-                return <EquipmentList />;
+                return <EquipmentList handleEdit={handleEdit} handleDelete={handleDelete} handleUpdate={handleUpdate} />;
             case 'payments':
-                return <PaymentMethodList />;
+                return <PaymentMethodList handleEdit={handleEdit} handleDelete={handleDelete} handleUpdate={handleUpdate} />;
             case 'reservations':
-                return <ReservationList />;
+                return <ReservationList handleEdit={handleEdit} handleDelete={handleDelete} handleUpdate={handleUpdate} />;
             case 'students':
-                return <StudentList />;
+                return <StudentList handleEdit={handleEdit} handleDelete={handleDelete} handleUpdate={handleUpdate} />;
             default:
                 return <BookingList />;
         }
@@ -75,7 +98,19 @@ const SummaryPage = () => {
                     Students ({tabCounts.students})
                 </button>
             </nav>
-            <main className="summary-content">{renderActiveTab()}</main>
+            <main className="summary-content">
+                {renderActiveTab()}
+            </main>
+
+            {/* Start Again Button */}
+            <div className="start-again-container">
+                <button
+                    onClick={handleStartAgain}
+                    className="start-again-button"
+                >
+                    Book  Again
+                </button>
+            </div>
         </div>
     );
 };

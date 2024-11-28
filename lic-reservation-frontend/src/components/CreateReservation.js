@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './CreateReservation.css';
 
 function CreateReservation() {
   const [reservationData, setReservationData] = useState({ reservationDate: '', reservationTime: '', status: 'Pending' });
@@ -14,7 +15,7 @@ function CreateReservation() {
       .post('/reservations/createReservation', reservationData)
       .then(() => {
         setMessage('Reservation created successfully!');
-        setTimeout(() => navigate('/booking-management'), 1500);
+        setTimeout(() => navigate('/booking-management'), 1500); // Redirect after 1.5s
       })
       .catch(() => {
         setMessage('Error creating reservation');
@@ -22,9 +23,9 @@ function CreateReservation() {
   };
 
   return (
-    <div>
+    <div className="create-reservation-container">
       <h2>Create Reservation</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="create-reservation-form" onSubmit={handleSubmit}>
         <label>Reservation Date:</label>
         <input
           type="date"
@@ -41,7 +42,7 @@ function CreateReservation() {
         />
         <button type="submit">Next</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
     </div>
   );
 }

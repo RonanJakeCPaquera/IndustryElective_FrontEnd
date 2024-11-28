@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './CreateBooking.css';
 
 function CreateBooking() {
   const [bookingData, setBookingData] = useState({
@@ -39,10 +40,9 @@ function CreateBooking() {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+    <div className="create-booking-container">
       <h2>Create Booking</h2>
-      <form onSubmit={handleSubmit}>
-        {/* User Name */}
+      <form className="create-booking-form" onSubmit={handleSubmit}>
         <label>UserName:</label>
         <input
           type="text"
@@ -52,7 +52,6 @@ function CreateBooking() {
           required
         />
 
-        {/* Contact Number */}
         <label>Contact Number:</label>
         <input
           type="tel"
@@ -62,7 +61,6 @@ function CreateBooking() {
           required
         />
 
-        {/* Email */}
         <label>Email (@cit.edu only):</label>
         <input
           type="email"
@@ -72,7 +70,6 @@ function CreateBooking() {
           required
         />
 
-        {/* Payment Amount */}
         <label>Payment Amount:</label>
         <input
           type="number"
@@ -83,7 +80,6 @@ function CreateBooking() {
           required
         />
 
-        {/* Booking Date */}
         <label>Booking Date:</label>
         <input
           type="date"
@@ -92,7 +88,6 @@ function CreateBooking() {
           required
         />
 
-        {/* Start Time */}
         <label>Time to Come In:</label>
         <input
           type="time"
@@ -101,7 +96,6 @@ function CreateBooking() {
           required
         />
 
-        {/* End Time */}
         <label>Time to End Out:</label>
         <input
           type="time"
@@ -110,7 +104,6 @@ function CreateBooking() {
           required
         />
 
-        {/* Booking Type */}
         <label>Booking Type:</label>
         <select
           value={bookingData.bookingType}
@@ -126,13 +119,10 @@ function CreateBooking() {
           <option value="Other">Other</option>
         </select>
 
-        <button type="submit" style={{ marginTop: '15px', padding: '10px', backgroundColor: 'orange', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-          Next
-        </button>
+        <button type="submit">Next</button>
       </form>
 
-      {/* Feedback Message */}
-      {message && <p style={{ marginTop: '15px', color: 'green' }}>{message}</p>}
+      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
     </div>
   );
 }

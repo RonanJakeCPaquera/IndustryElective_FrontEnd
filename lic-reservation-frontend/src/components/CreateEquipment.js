@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './CreateEquipment.css';
 
 function CreateEquipment() {
   const [equipmentData, setEquipmentData] = useState({
@@ -26,9 +27,9 @@ function CreateEquipment() {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+    <div className="create-equipment-container">
       <h2>Create Equipment</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="create-equipment-form" onSubmit={handleSubmit}>
         {/* Equipment Name */}
         <label>Equipment Name:</label>
         <input
@@ -60,24 +61,11 @@ function CreateEquipment() {
           required
         />
 
-        <button
-          type="submit"
-          style={{
-            marginTop: '15px',
-            padding: '10px',
-            backgroundColor: 'orange',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
-        >
-          Next
-        </button>
+        <button type="submit">Next</button>
       </form>
 
       {/* Feedback Message */}
-      {message && <p style={{ marginTop: '15px', color: 'green' }}>{message}</p>}
+      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
     </div>
   );
 }
