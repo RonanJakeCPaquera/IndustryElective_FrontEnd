@@ -4,7 +4,7 @@ import './App.css';
  
 // Import components
 import CreateStudent from './components/CreateStudent';
-// import StudentList from './components/StudentList';
+import StudentList from './components/StudentList';
 import CreateReservation from './components/CreateReservation';
 import ReservationList from './components/ReservationList';
 import CreateBooking from './components/CreateBooking';
@@ -128,7 +128,7 @@ function App() {
 <ProtectedRoute>
 <div>
 <CreateStudent />
-{/* <StudentList /> */}
+<StudentList />
 </div>
 </ProtectedRoute>
             }
@@ -192,3 +192,4 @@ function App() {
 }
  
 export default App;
+ 
