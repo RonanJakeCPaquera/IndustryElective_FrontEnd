@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MdEdit, MdDelete, MdCheckCircle } from 'react-icons/md';  // Importing Material Design icons
+import { MdEdit, MdDelete, MdCheckCircle } from 'react-icons/md'; // Importing Material Design icons
 
 const BookingList = () => {
     const [bookings, setBookings] = useState([]);
@@ -57,16 +57,19 @@ const BookingList = () => {
 
     const formatDateTime = (dateString, timeString) => {
         const date = new Date(dateString);
-        const time = new Date(`1970-01-01T${timeString}`);
+
+        // Parse timeString into hours and minutes
+        const [hours, minutes] = timeString.split(':').map(Number);
+
+        // Set time on the date object
+        date.setHours(hours, minutes, 0, 0);
 
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = date.toLocaleDateString(undefined, options);
 
-        const hours = time.getHours();
-        const minutes = time.getMinutes();
-        const ampm = hours >= 12 ? 'pm' : 'am';
         const formattedHours = hours % 12 || 12; // Convert to 12-hour format
         const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
+        const ampm = hours >= 12 ? 'PM' : 'AM';
 
         return `${formattedDate} at ${formattedHours}:${formattedMinutes} ${ampm}`;
     };
