@@ -1,197 +1,202 @@
 /* General Styles */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f4f8;
   color: #333;
+  line-height: 1.6;
 }
- 
+
 .App {
   text-align: center;
 }
- 
+
 /* Header */
 .header {
-  background-color: #007bff;
-  color: white;
-  padding: 1rem;
+  background-color: #800000; /* Maroon background */
+  color: white; /* White text */
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
- 
+
 .header h1 {
   margin: 0;
   font-size: 1.8rem;
+  color: #f9fafb;
 }
- 
+
 .nav-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
 }
- 
+
 .nav-buttons a {
-  color: white;
+  color: #ffffff;
   text-decoration: none;
+  font-size: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
- 
+
 .nav-buttons a:hover {
-  background-color: #0056b3;
+  background-color: #374151;
+  color: #f3f4f6;
 }
- 
+
 .logout-button {
-  background-color: #dc3545;
+  background-color: #fbbf24;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
- 
+
 .logout-button:hover {
-  background-color: #c82333;
+  background-color: #dc2626;
 }
- 
+
 .user-greeting {
   font-size: 1rem;
-  color: #ffc107;
-  margin-right: 1rem;
+  color: #fbbf24;
 }
- 
+
 /* Home Page */
 .home-container {
   padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
 }
- 
+
 .hero-banner {
-  background-color: #e9ecef;
+  background-color: #ffffff;
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 12px;
   margin: 2rem auto;
-  max-width: 800px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
- 
+
 .hero-banner h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
-  color: #007bff;
+  color: #1f2937;
+  font-weight: 700;
 }
- 
+
 .hero-banner p {
   font-size: 1.2rem;
+  color: #6b7280;
   margin-bottom: 2rem;
+  max-width: 700px;
+  margin: 0 auto 2rem auto;
 }
- 
+
 .cta-button {
-  background-color: #28a745;
+  background-color: #10b981;
   color: white;
-  padding: 0.7rem 1.5rem;
+  padding: 0.8rem 2rem;
   border: none;
-  border-radius: 5px;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
- 
+
 .cta-button:hover {
-  background-color: #218838;
+  background-color: #059669;
 }
- 
+
 /* Features Section */
 .features {
-  margin: 2rem auto;
-  max-width: 900px;
+  margin: 3rem auto;
+  max-width: 1100px;
 }
- 
+
 .features h2 {
   font-size: 2rem;
+  color: #1f2937;
+  font-weight: 700;
   margin-bottom: 1.5rem;
-  color: #343a40;
 }
- 
+
 .features-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
- 
+
 .feature-card {
-  background-color: white;
-  border: 1px solid #dee2e6;
-  border-radius: 10px;
-  padding: 1rem;
-  max-width: 300px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
- 
+
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
- 
+
 .feature-card h3 {
   font-size: 1.5rem;
-  color: #007bff;
+  color: #111827;
+  font-weight: 600;
   margin-bottom: 0.5rem;
 }
- 
+
 .feature-card p {
   font-size: 1rem;
-  color: #6c757d;
+  color: #6b7280;
 }
- 
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-banner h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
- 
+
   .hero-banner p {
     font-size: 1rem;
   }
- 
+
   .cta-button {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
   }
- 
+
   .features-list {
-    flex-direction: column;
-    align-items: center;
-  }
- 
-  .feature-card {
-    max-width: 90%;
+    grid-template-columns: 1fr;
   }
 }
- 
+
 @media (max-width: 480px) {
   .header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
- 
+
   .nav-buttons {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
- 
+
   .hero-banner h1 {
     font-size: 1.8rem;
   }
- 
+
   .hero-banner p {
     font-size: 0.9rem;
   }
 }
- 

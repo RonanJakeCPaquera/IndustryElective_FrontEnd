@@ -4,41 +4,37 @@
   padding: 20px;
   overflow: hidden;
 }
-
 .photo-gallery h1 {
   font-size: 2rem;
   margin-bottom: 10px;
+  color: rgb(255, 255, 255);
 }
-
 .photo-gallery p {
   font-size: 1rem;
   margin-bottom: 20px;
   color: gray;
 }
-
 /* Scroll container */
 .scroll-container {
   position: relative;
+  width: 100%; /* Full width to ensure images aren't cut off */
+  height: 250px; /* Fixed height or dynamic height */
   overflow: hidden;
-  width: 100%; /* Full width */
-  height: auto; /* Dynamic height based on image height */
 }
-
 .scroll-track {
   display: flex;
   width: calc(200%); /* Twice the width of the container for seamless looping */
   animation: scroll-horizontal 15s linear infinite; /* Smooth continuous scrolling */
 }
-
 .gallery-image {
   height: auto;
   width: auto; /* Preserve the image's natural aspect ratio */
-  max-height: 200px; /* Optional: Adjust maximum height for all images */
+  max-height: 200px;
+  max-width: 100%; /* Optional: Adjust maximum height for all images */
   margin-right: 10px; /* Optional spacing between images */
   border-radius: 8px; /* Optional rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
-
 /* Keyframes for continuous horizontal scrolling */
 @keyframes scroll-horizontal {
   0% {

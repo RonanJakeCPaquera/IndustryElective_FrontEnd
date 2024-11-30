@@ -20,6 +20,48 @@ import ResetPassword from './components/ResetPassword';
 import SummaryPage from './components/SummaryPage';
 import PhotoGallery from './components/PhotoGallery'; // Import the Photo Gallery component
  
+// Background and content styling
+const containerStyle = {
+  backgroundImage: "url('/HomePage.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  minHeight: "100vh", // Full viewport height
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "20px 0",
+};
+ 
+const contentStyle = {
+  color: '#FFFFFF',
+  padding: "20px",
+  borderRadius: "10px",
+  backgroundColor: "rgba(0, 0, 0, 0.6)", // Semi-transparent black background for readability
+  maxWidth: "800px",
+  textAlign: "center",
+};
+ 
+const headingStyle = {
+  fontSize: "2.5rem", // Larger font size for the heading
+  marginBottom: "10px",
+};
+ 
+const paragraphStyle = {
+  fontSize: "1.2rem", // Slightly larger font size for paragraphs
+  lineHeight: "1.5", // Improve readability
+};
+ 
+const buttonStyle = {
+  marginTop: "20px",
+  padding: "10px 20px",
+  backgroundColor: "#ff8c00",
+  color: "#FFFFFF",
+  border: "none",
+  borderRadius: "5px",
+  fontSize: "1rem",
+  cursor: "pointer",
+};
+ 
 function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
     const savedLoggedIn = localStorage.getItem('loggedIn');
@@ -52,37 +94,64 @@ function App() {
     };
  
     return (
-<div className="home-container">
-<header className="hero-banner">
-<h1>Welcome to LIC Management System</h1>
-<p>
+<div style={containerStyle}>
+        {/* Welcome Section */}
+<div style={contentStyle}>
+<h1 style={headingStyle}>Welcome to LIC Management System</h1>
+<p style={paragraphStyle}>
             Simplify reservation management for students and staff with our easy-to-use system. Track equipment, manage
             bookings, and ensure efficient operations!
 </p>
-<button onClick={handleStartBooking} className="cta-button">
+<button onClick={handleStartBooking} style={buttonStyle}>
             Start Booking
 </button>
-</header>
-<section className="features">
-<h2>Key Features</h2>
-<div className="features-list">
-<div className="feature-card">
+</div>
+ 
+        {/* Key Features Section */}
+<section className="features" style={{ marginTop: '40px' }}>
+<h2 style={{ color: '#FFFFFF', textAlign: 'center', marginBottom: '20px' }}>Key Features</h2>
+<div className="features-list" style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
+<div
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '10px',
+                padding: '15px',
+                width: '250px',
+                textAlign: 'center',
+              }}
+>
 <h3>Reservation Tracking</h3>
 <p>Real-time dashboard to manage resources efficiently.</p>
 </div>
-<div className="feature-card">
+<div
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '10px',
+                padding: '15px',
+                width: '250px',
+                textAlign: 'center',
+              }}
+>
 <h3>Usage Reports</h3>
 <p>Generate statistics and notifications for accountability.</p>
 </div>
-<div className="feature-card">
+<div
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '10px',
+                padding: '15px',
+                width: '250px',
+                textAlign: 'center',
+              }}
+>
 <h3>Customization</h3>
 <p>Adaptable system to align with LIC librarian requirements.</p>
 </div>
 </div>
 </section>
-        {/* Add the PhotoGallery component */}
-<section className="photo-gallery-section">
-<h2>Explore Our Gallery</h2>
+ 
+        {/* Photo Gallery Section */}
+<section className="photo-gallery-section" style={{ marginTop: '40px' }}>
 <PhotoGallery />
 </section>
 </div>
@@ -98,14 +167,8 @@ function App() {
 <Link to="/">Home</Link>
             {loggedIn && <span className="user-greeting">Hello, {userName}!</span>}
             {loggedIn && <Link to="/student-management">Student Management</Link>}
-            {/* {loggedIn && <Link to="/reservation-management">Reservation Management</Link>}
-            {loggedIn && <Link to="/booking-management">Booking Management</Link>}
-            {loggedIn && <Link to="/equipment-management">Equipment Management</Link>}
-            {loggedIn && <Link to="/payment-method-management">Payment Method Management</Link>} */}
             {loggedIn && <Link to="/summary">Summary</Link>}
             {!loggedIn && <Link to="/login">Login</Link>}
-            {/* {!loggedIn && <Link to="/register">Register</Link>}
-            {!loggedIn && <Link to="/forgot-password">Forgot Password</Link>} */}
             {loggedIn && (
 <button onClick={handleLogout} className="logout-button">
                 Logout
@@ -192,4 +255,3 @@ function App() {
 }
  
 export default App;
- 
