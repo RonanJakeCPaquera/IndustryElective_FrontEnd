@@ -7,7 +7,7 @@ function CreateEquipment() {
   const [equipmentData, setEquipmentData] = useState({
     name: '',
     quantity: 1,
-    type: '',
+    type: '', // Defaults to an empty string for validation
   });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
@@ -51,15 +51,21 @@ function CreateEquipment() {
           required
         />
 
-        {/* Equipment Type */}
+        {/* Equipment Type (Dropdown) */}
         <label>Equipment Type:</label>
-        <input
-          type="text"
-          placeholder="Enter Equipment Type"
+        <select
           value={equipmentData.type}
           onChange={(e) => setEquipmentData({ ...equipmentData, type: e.target.value })}
           required
-        />
+        >
+          <option value="" disabled>
+            Choose Equipment
+          </option>
+          <option value="Computer Lab">Computer Lab</option>
+          <option value="VR Simulator">VR Simulator</option>
+          <option value="Driving Simulator">Driving Simulator</option>
+          <option value="Discussion Room">Discussion Room</option>
+        </select>
 
         <button type="submit">Next</button>
       </form>
