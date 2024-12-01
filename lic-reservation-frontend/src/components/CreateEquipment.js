@@ -12,14 +12,58 @@ function CreateEquipment() {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+  const options = [{
+    value: 'computer_lab',
+    label: 'Computer Lab',
+  }, {
+    value: 'vr_sim',
+    label: 'VR Simulator',
+  },  {
+    value: 'driving_sim',
+    label: 'Driving Simulator',
+  }, {
+    value: 'discuss_room',
+    label: 'Discussion Room',
+  }];
+
+  console.log(equipmentData);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     axios
       .post('/equipments/createEquipment', equipmentData)
       .then(() => {
+        let amount = 50;
+
+        switch (equipmentData.type) {
+          case 'computer_lab':
+            amount = 50;
+            break;
+          case 'vr_sim':
+            amount = 30;
+            break;
+          case 'driving_sim':
+            amount = 40;
+            break;
+          case 'discuss_room':
+            amount = 20;
+            break;
+          default:
+            amount = 0;
+            break;
+        }
+        
         setMessage('Equipment created successfully!');
-        setTimeout(() => navigate('/payment-method-management'), 1500); // Redirect after success
+        
+        setTimeout(() => navigate('/payment-method-management', {
+          state: {
+            paymentData: {
+              paymentAmount: amount * equipmentData.quantity,
+              paymentDate: new Date().toISOString().split('T')[0],
+            }
+          }
+        }), 1500); // Redirect after success
       })
       .catch(() => {
         setMessage('Error creating equipment');
@@ -61,10 +105,12 @@ function CreateEquipment() {
           <option value="" disabled>
             Choose Equipment
           </option>
-          <option value="Computer Lab">Computer Lab</option>
-          <option value="VR Simulator">VR Simulator</option>
-          <option value="Driving Simulator">Driving Simulator</option>
-          <option value="Discussion Room">Discussion Room</option>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+          
         </select>
 
         <button type="submit">Next</button>

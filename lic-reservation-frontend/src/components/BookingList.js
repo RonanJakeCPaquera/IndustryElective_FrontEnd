@@ -98,8 +98,7 @@ const BookingList = () => {
                         <th>#</th>
                         <th>Name</th>
                         <th>Contact Number</th>
-                        <th>Email</th>
-                        <th>Payment Amount</th>
+                        <th>Email</th>                        
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Status</th>
@@ -134,11 +133,7 @@ const BookingList = () => {
                                         />
                                     </td>
                                     <td>
-                                        <input
-                                            type="number"
-                                            value={editingBooking.paymentAmount}
-                                            onChange={(e) => handleEditChange('paymentAmount', e.target.value)}
-                                        />
+                                        
                                     </td>
                                     <td>{formatDateTime(booking.bookingDate, booking.startTime)}</td>
                                     <td>{formatDateTime(booking.bookingDate, booking.endTime)}</td>
@@ -157,8 +152,7 @@ const BookingList = () => {
                                     <td>{counters[booking.bookingId] || 1}</td>
                                     <td>{booking.name}</td>
                                     <td>{booking.contactNumber}</td>
-                                    <td>{booking.email}</td>
-                                    <td>{`₱${booking.paymentAmount}`}</td>
+                                    <td>{booking.email}</td>                                    
                                     <td>{formatDateTime(booking.bookingDate, booking.startTime)}</td>
                                     <td>{formatDateTime(booking.bookingDate, booking.endTime)}</td>
                                     <td>{booking.status}</td>

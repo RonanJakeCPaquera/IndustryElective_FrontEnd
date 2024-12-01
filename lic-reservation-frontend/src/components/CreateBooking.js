@@ -10,16 +10,29 @@ function CreateBooking() {
     name: '',
     contactNumber: '',
     email: '',
-    paymentAmount: 0,
     startTime: '',
     endTime: '',
     status: 'Upcoming',
-    bookingType: '',
   });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
  
-  const handleSubmit = (event) => {
+  // Function to check if booking exists for the same date
+  const checkExistingBooking = async (date) => {
+    try {
+      const response = await axios.get(`/bookings/checkBookingDate/${date}`);
+      if (response.data.exists) {
+        setMessage('Error: Booking already exists for this date. Please choose another date.');
+        return true; // Booking already exists
+      }
+      return false; // No existing booking
+    } catch (error) {
+      setMessage('Error checking booking date');
+      return false;
+    }
+  };
+ 
+  const handleSubmit = async (event) => {
     event.preventDefault();
  
     // Validate the email domain
@@ -28,23 +41,30 @@ function CreateBooking() {
       return;
     }
  
+    // Check if a booking already exists for the selected date
+    const bookingExists = await checkExistingBooking(bookingData.bookingDate);
+    if (bookingExists) {
+      return; // If booking exists, prevent form submission
+    }
+ 
+    // Proceed to create the booking
     axios
       .post('/bookings/createBooking', bookingData)
       .then(() => {
         setMessage('Booking created successfully!');
         setTimeout(() => navigate('/equipment-management'), 1500);
       })
-      .catch(() => {
+      .catch((e) => {
         setMessage('Error creating booking');
       });
   };
  
   return (
-    <div className="create-booking-container">
-      <h2>Create Booking</h2>
-      <form className="create-booking-form" onSubmit={handleSubmit}>
-        <label>UserName:</label>
-        <input
+<div className="create-booking-container">
+<h2>Create Booking</h2>
+<form className="create-booking-form" onSubmit={handleSubmit}>
+<label>UserName:</label>
+<input
           type="text"
           placeholder="UserName"
           value={bookingData.name}
@@ -53,7 +73,7 @@ function CreateBooking() {
         />
  
         <label>Contact Number:</label>
-        <input
+<input
           type="tel"
           placeholder="Enter Contact Number"
           value={bookingData.contactNumber}
@@ -62,7 +82,7 @@ function CreateBooking() {
         />
  
         <label>Email (@cit.edu only):</label>
-        <input
+<input
           type="email"
           placeholder="Enter Email"
           value={bookingData.email}
@@ -70,18 +90,8 @@ function CreateBooking() {
           required
         />
  
-        <label>Payment Amount:</label>
-        <input
-          type="number"
-          placeholder="Enter Payment Amount"
-          value={bookingData.paymentAmount}
-          onChange={(e) => setBookingData({ ...bookingData, paymentAmount: parseFloat(e.target.value) })}
-          min="0"
-          required
-        />
- 
         <label>Booking Date:</label>
-        <input
+<input
           type="date"
           value={bookingData.bookingDate}
           onChange={(e) => setBookingData({ ...bookingData, bookingDate: e.target.value })}
@@ -89,7 +99,7 @@ function CreateBooking() {
         />
  
         <label>Time to Come In:</label>
-        <input
+<input
           type="time"
           value={bookingData.startTime}
           onChange={(e) => setBookingData({ ...bookingData, startTime: e.target.value })}
@@ -97,33 +107,18 @@ function CreateBooking() {
         />
  
         <label>Time to End Out:</label>
-        <input
+<input
           type="time"
           value={bookingData.endTime}
           onChange={(e) => setBookingData({ ...bookingData, endTime: e.target.value })}
           required
         />
  
-        <label>Booking Type:</label>
-        <select
-          value={bookingData.bookingType}
-          onChange={(e) => setBookingData({ ...bookingData, bookingType: e.target.value })}
-          required
-        >
-          <option value="" disabled>
-            Select Booking Type
-          </option>
-          <option value="Room">Room</option>
-          <option value="Equipment">Equipment</option>
-          <option value="Event">Event</option>
-          <option value="Other">Other</option>
-        </select>
- 
         <button type="submit">Next</button>
-      </form>
+</form>
  
       {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
-    </div>
+</div>
   );
 }
  

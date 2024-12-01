@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './CreatePaymentMethod.css';
 
 function CreatePaymentMethod() {
@@ -8,8 +8,18 @@ function CreatePaymentMethod() {
     paymentAmount: 0,
     paymentDate: '',
   });
+
+  const { state } = useLocation();
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  // Initialize payment data from state if available
+  useEffect(() => {
+    if (state && state.paymentData) {
+      setPaymentData(state.paymentData);
+    }
+  }, [state]);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -39,6 +49,7 @@ function CreatePaymentMethod() {
   const handleStartAgain = () => {
     navigate('/student-management'); // Redirect to start over
   };
+
 
   return (
     <div className="payment-method-container">
