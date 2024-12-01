@@ -13,58 +13,57 @@ function CreateBooking() {
     startTime: '',
     endTime: '',
     status: 'Upcoming',
+    userId: 1, // Example user ID, adjust based on your app's user management
   });
   const [message, setMessage] = useState('');
+  const [nextAvailableDate, setNextAvailableDate] = useState('');
   const navigate = useNavigate();
- 
-  // Function to check if booking exists for the same date
-  const checkExistingBooking = async (date) => {
-    try {
-      const response = await axios.get(`/bookings/checkBookingDate/${date}`);
-      if (response.data.exists) {
-        setMessage('Error: Booking already exists for this date. Please choose another date.');
-        return true; // Booking already exists
-      }
-      return false; // No existing booking
-    } catch (error) {
-      setMessage('Error checking booking date');
-      return false;
-    }
-  };
  
   const handleSubmit = async (event) => {
     event.preventDefault();
  
-    // Validate the email domain
+    // Basic Email validation (only @cit.edu domain allowed)
     if (!bookingData.email.endsWith('@cit.edu')) {
-      setMessage('Invalid email domain. Use @cit.edu email.');
+      setMessage('Invalid email domain. Please use your @cit.edu email.');
       return;
     }
  
-    // Check if a booking already exists for the selected date
-    const bookingExists = await checkExistingBooking(bookingData.bookingDate);
-    if (bookingExists) {
-      return; // If booking exists, prevent form submission
-    }
- 
-    // Proceed to create the booking
-    axios
-      .post('/bookings/createBooking', bookingData)
-      .then(() => {
-        setMessage('Booking created successfully!');
-        setTimeout(() => navigate('/equipment-management'), 1500);
-      })
-      .catch((e) => {
-        setMessage('Error creating booking');
+    try {
+      // Conflict Check: Query backend to check if the selected booking date is fully booked
+      const response = await axios.get('/bookings/checkConflict', {
+        params: { bookingDate: bookingData.bookingDate },
       });
+ 
+      if (response.data.conflict) {
+        setMessage(`The selected date is fully booked. The next available date is ${response.data.nextAvailableDate}.`);
+        setNextAvailableDate(response.data.nextAvailableDate);
+        return;  // Exit early if a conflict is found
+      }
+ 
+      // Create Booking: If no conflict, proceed with creating the booking
+      const createResponse = await axios.post('/bookings/createBooking', bookingData);
+ 
+      // Handle success response and navigate to another page after booking is created
+      if (createResponse.status === 200) {
+        setMessage('Booking created successfully!');
+        setTimeout(() => navigate('/equipment-management'), 1500);  // Redirect to another page after a successful booking
+      }
+    } catch (error) {
+      // Error handling for API requests
+      if (error.response) {
+        setMessage(`Error: ${error.response.data.message || 'Error creating booking'}`);
+      } else {
+        setMessage('Network error. Please try again later.');
+      }
+    }
   };
  
   return (
-<div className="create-booking-container">
-<h2>Create Booking</h2>
-<form className="create-booking-form" onSubmit={handleSubmit}>
-<label>UserName:</label>
-<input
+    <div className="create-booking-container">
+      <h2>Create Booking</h2>
+      <form className="create-booking-form" onSubmit={handleSubmit}>
+        <label>UserName:</label>
+        <input
           type="text"
           placeholder="UserName"
           value={bookingData.name}
@@ -73,7 +72,7 @@ function CreateBooking() {
         />
  
         <label>Contact Number:</label>
-<input
+        <input
           type="tel"
           placeholder="Enter Contact Number"
           value={bookingData.contactNumber}
@@ -82,7 +81,7 @@ function CreateBooking() {
         />
  
         <label>Email (@cit.edu only):</label>
-<input
+        <input
           type="email"
           placeholder="Enter Email"
           value={bookingData.email}
@@ -91,7 +90,7 @@ function CreateBooking() {
         />
  
         <label>Booking Date:</label>
-<input
+        <input
           type="date"
           value={bookingData.bookingDate}
           onChange={(e) => setBookingData({ ...bookingData, bookingDate: e.target.value })}
@@ -99,7 +98,7 @@ function CreateBooking() {
         />
  
         <label>Time to Come In:</label>
-<input
+        <input
           type="time"
           value={bookingData.startTime}
           onChange={(e) => setBookingData({ ...bookingData, startTime: e.target.value })}
@@ -107,7 +106,7 @@ function CreateBooking() {
         />
  
         <label>Time to End Out:</label>
-<input
+        <input
           type="time"
           value={bookingData.endTime}
           onChange={(e) => setBookingData({ ...bookingData, endTime: e.target.value })}
@@ -115,10 +114,18 @@ function CreateBooking() {
         />
  
         <button type="submit">Next</button>
-</form>
+      </form>
  
-      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
-</div>
+      {message && (
+        <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>
+          {message}
+        </p>
+      )}
+ 
+      {nextAvailableDate && (
+        <p>The next available date is {nextAvailableDate}.</p>
+      )}
+    </div>
   );
 }
  
