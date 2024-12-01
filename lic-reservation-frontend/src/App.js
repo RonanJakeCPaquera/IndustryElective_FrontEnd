@@ -6,13 +6,13 @@ import './App.css';
 import CreateStudent from './components/CreateStudent';
 // import StudentList from './components/StudentList';
 import CreateReservation from './components/CreateReservation';
-import ReservationList from './components/ReservationList';
+// import ReservationList from './components/ReservationList';
 import CreateBooking from './components/CreateBooking';
 import BookingList from './components/BookingList';
 import CreatePaymentMethod from './components/CreatePaymentMethod';
-import PaymentMethodList from './components/PaymentMethodList';
+// import PaymentMethodList from './components/PaymentMethodList';
 import CreateEquipment from './components/CreateEquipment';
-import EquipmentList from './components/EquipmentList';
+// import EquipmentList from './components/EquipmentList';
 import Login from './components/Login';
 import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
@@ -166,11 +166,11 @@ function App() {
 <nav className="nav-buttons">
 <Link to="/">Home</Link>
 {loggedIn && <span className="user-greeting">Hello, {userName}!</span>}
-            {loggedIn && <Link to="/student-management">Student Management</Link>}
-            {loggedIn && <Link to="/reservation-management">Reservation Management</Link>}
+            {loggedIn && <Link to="/student-management">Booking</Link>}
+            {/* {loggedIn && <Link to="/reservation-management">Reservation Management</Link>}
             {loggedIn && <Link to="/booking-management">Booking Management</Link>}
             {loggedIn && <Link to="/equipment-management">Equipment Management</Link>}
-            {loggedIn && <Link to="/payment-method-management">Payment Method Management</Link>}
+            {loggedIn && <Link to="/payment-method-management">Payment Method Management</Link>} */}
             {loggedIn && <Link to="/summary">Summary</Link>}
             {!loggedIn && <Link to="/login">Login</Link>}
             {!loggedIn && <Link to="/register">Register</Link>}
@@ -208,7 +208,7 @@ function App() {
 <ProtectedRoute>
 <div>
 <CreateReservation />
-<ReservationList />
+{/* <ReservationList /> */}
 </div>
 </ProtectedRoute>
             }
@@ -230,7 +230,7 @@ function App() {
 <ProtectedRoute>
 <div>
 <CreateEquipment />
-<EquipmentList />
+{/* <EquipmentList /> */}
 </div>
 </ProtectedRoute>
             }
@@ -241,7 +241,7 @@ function App() {
 <ProtectedRoute>
 <div>
 <CreatePaymentMethod />
-<PaymentMethodList />
+{/* <PaymentMethodList /> */}
 </div>
 </ProtectedRoute>
             }

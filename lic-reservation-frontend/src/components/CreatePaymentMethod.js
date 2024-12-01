@@ -46,9 +46,9 @@ function CreatePaymentMethod() {
       });
   };
 
-  const handleStartAgain = () => {
-    navigate('/student-management'); // Redirect to start over
-  };
+  // const handleStartAgain = () => {
+  //   navigate('/student-management'); // Redirect to start over
+  // };
 
 
   return (
@@ -84,9 +84,9 @@ function CreatePaymentMethod() {
       {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
 
       {/* Start Again Button */}
-      <button onClick={handleStartAgain} className="start-again-button">
+      {/* <button onClick={handleStartAgain} className="start-again-button">
         Start Again
-      </button>
+      </button> */}
     </div>
   );
 }

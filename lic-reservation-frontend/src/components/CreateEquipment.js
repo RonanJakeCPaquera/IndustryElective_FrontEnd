@@ -14,16 +14,16 @@ function CreateEquipment() {
 
   const options = [{
     value: 'computer_lab',
-    label: 'Computer Lab',
+    label: 'Computer Lab - PHP 50.00',
   }, {
     value: 'vr_sim',
-    label: 'VR Simulator',
+    label: 'VR Simulator - PHP 30.00',
   },  {
     value: 'driving_sim',
-    label: 'Driving Simulator',
+    label: 'Driving Simulator - PHP 40.00',
   }, {
     value: 'discuss_room',
-    label: 'Discussion Room',
+    label: 'Discussion Room - PHP 20.00',
   }];
 
   console.log(equipmentData);
