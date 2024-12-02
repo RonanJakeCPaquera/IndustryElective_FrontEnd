@@ -54,47 +54,121 @@ const StudentList = () => {
     return (
         <div>
             <h2>Student List</h2>
-            <ul>
-                {students.map((student) => (
-                    <li key={student.studentId}>
-                        {editStudentId === student.studentId ? (
-                            <div>
-                                <input 
-                                    type="text" 
-                                    name="name"
-                                    value={editedStudent.name}
-                                    onChange={handleChange}
-                                    placeholder="Enter name"
-                                />
-                                <input 
-                                    type="text" 
-                                    name="program"
-                                    value={editedStudent.program}
-                                    onChange={handleChange}
-                                    placeholder="Enter program"
-                                />
-                                <input 
-                                    type="text" 
-                                    name="year"
-                                    value={editedStudent.year}
-                                    onChange={handleChange}
-                                    placeholder="Enter year"
-                                />
-                                <button onClick={handleUpdate}>Update</button>
-                                <button onClick={() => setEditStudentId(null)}>Cancel</button>
-                            </div>
-                        ) : (
-                            <div>
-                                <p><strong>Name:</strong> {student.name}</p>
-                                <p><strong>Program:</strong> {student.program}</p>
-                                <p><strong>Year:</strong> {student.year}</p>
-                                <button onClick={() => handleEditClick(student.studentId)}>Edit</button>
-                                <button onClick={() => deleteStudent(student.studentId)}>Delete</button>
-                            </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
+            <div className="table-container">
+                <table className="student-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Program</th>
+                            <th>Year</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {students.map((student) => (
+                            <tr key={student.studentId}>
+                                <td>{student.studentId}</td>
+                                <td>
+                                    {editStudentId === student.studentId ? (
+                                        <input 
+                                            type="text" 
+                                            name="name"
+                                            value={editedStudent.name}
+                                            onChange={handleChange}
+                                            placeholder="Enter name"
+                                        />
+                                    ) : (
+                                        student.name
+                                    )}
+                                </td>
+                                <td>
+                                    {editStudentId === student.studentId ? (
+                                        <input 
+                                            type="text" 
+                                            name="program"
+                                            value={editedStudent.program}
+                                            onChange={handleChange}
+                                            placeholder="Enter program"
+                                        />
+                                    ) : (
+                                        student.program
+                                    )}
+                                </td>
+                                <td>
+                                    {editStudentId === student.studentId ? (
+                                        <input 
+                                            type="text" 
+                                            name="year"
+                                            value={editedStudent.year}
+                                            onChange={handleChange}
+                                            placeholder="Enter year"
+                                        />
+                                    ) : (
+                                        student.year
+                                    )}
+                                </td>
+                                <td>
+                                    {editStudentId === student.studentId ? (
+                                        <>
+                                            <button onClick={handleUpdate}>Update</button>
+                                            <button onClick={() => setEditStudentId(null)}>Cancel</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button onClick={() => handleEditClick(student.studentId)}>Edit</button>
+                                            <button onClick={() => deleteStudent(student.studentId)}>Delete</button>
+                                        </>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <style jsx>{`
+                .table-container {
+                    margin: 20px 0;
+                    overflow-x: auto;
+                }
+
+                .student-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: center;
+                }
+
+                .student-table th,
+                .student-table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+
+                .student-table th {
+                    background-color: maroon;
+                    color: white;
+                    font-weight: bold;
+                }
+
+                .student-table tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+
+                .student-table tr:hover {
+                    background-color: #ddd;
+                }
+
+                button {
+                    margin: 0 5px;
+                    padding: 5px 10px;
+                    cursor: pointer;
+                }
+
+                button:hover {
+                    background-color: #2196F3;
+                }
+            `}</style>
         </div>
     );
 };

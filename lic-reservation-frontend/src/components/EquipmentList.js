@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const EquipmentList = () => {
-    // State to store the list of equipment
     const [equipment, setEquipment] = useState([]);
-
-    // State to track the counters for equipment items (for quantity updates)
     const [counters, setCounters] = useState({});
-
-    // State for the form to edit the equipment details
     const [editing, setEditing] = useState(null);
     const [updatedEquipment, setUpdatedEquipment] = useState({
         name: '',
@@ -16,56 +11,45 @@ const EquipmentList = () => {
         type: ''
     });
 
-    // Fetch the equipment data when the component mounts
     useEffect(() => {
         fetchEquipment();
     }, []);
 
-    // Function to fetch equipment data from the server
     const fetchEquipment = async () => {
         try {
-            // Making a GET request to fetch equipment data
             const response = await axios.get('/equipments/getAllEquipments');
             const equipmentData = response.data;
-
-            // Setting the fetched equipment data into state
             setEquipment(equipmentData);
 
-            // Initialize counters with unique IDs for each piece of equipment
             const initialCounters = {};
             equipmentData.forEach((item, index) => {
-                initialCounters[item.equipmentId] = index + 1; // Start counters from 1
+                initialCounters[item.equipmentId] = index + 1;
             });
             setCounters(initialCounters);
         } catch (error) {
-            console.error('Error fetching equipment:', error); // Handle errors
+            console.error('Error fetching equipment:', error);
         }
     };
 
-    // Function to update the details of a specific equipment item
     const updateEquipment = async (id, updatedDetails) => {
         try {
-            // Sending PUT request to update equipment data
             await axios.put(`/equipments/updateEquipment/${id}`, updatedDetails);
-            fetchEquipment(); // Refresh the equipment list after updating
-            setEditing(null); // Close the edit form after update
+            fetchEquipment();
+            setEditing(null);
         } catch (error) {
-            console.error('Error updating equipment:', error); // Handle errors
+            console.error('Error updating equipment:', error);
         }
     };
 
-    // Function to delete a specific equipment item
     const deleteEquipment = async (id) => {
         try {
-            // Sending DELETE request to remove the equipment
             await axios.delete(`/equipments/deleteEquipment/${id}`);
-            fetchEquipment(); // Refresh the equipment list after deletion
+            fetchEquipment();
         } catch (error) {
-            console.error('Error deleting equipment:', error); // Handle errors
+            console.error('Error deleting equipment:', error);
         }
     };
 
-    // Handle change in the edit form input fields
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUpdatedEquipment((prev) => ({
@@ -77,39 +61,53 @@ const EquipmentList = () => {
     return (
         <div>
             <h2>Equipment List</h2>
-
-            {/* Show equipment list */}
-            <ul>
-                {equipment.map((item) => (
-                    <li key={item.equipmentId}>
-                        <p><strong>({counters[item.equipmentId] || 1}) Name:</strong> {item.name}</p>
-                        <p><strong>Quantity:</strong> {item.quantity}</p>
-                        <p><strong>Type:</strong> {item.type}</p>
-
-                        {/* Edit button */}
-                        <button onClick={() => {
-                            // Set the equipment to be edited
-                            setEditing(item.equipmentId);
-                            setUpdatedEquipment({
-                                name: item.name,
-                                quantity: item.quantity,
-                                type: item.type
-                            });
-                        }}>
-                            Edit
-                        </button>
-
-                        {/* Delete button */}
-                        <button onClick={() => deleteEquipment(item.equipmentId)}>
-                            Delete Equipment
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            {/* Equipment Table */}
+            <div className="table-container">
+                <table className="equipment-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {equipment.map((item) => (
+                            <tr key={item.equipmentId}>
+                                <td>{counters[item.equipmentId] || 1}</td>
+                                <td>{item.name}</td>
+                                <td>{item.quantity}</td>
+                                <td>{item.type}</td>
+                                <td>
+                                    <button
+                                        onClick={() => {
+                                            setEditing(item.equipmentId);
+                                            setUpdatedEquipment({
+                                                name: item.name,
+                                                quantity: item.quantity,
+                                                type: item.type
+                                            });
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => deleteEquipment(item.equipmentId)}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             {/* Edit Equipment Form */}
             {editing && (
-                <div>
+                <div className="edit-form">
                     <h3>Edit Equipment</h3>
                     <form
                         onSubmit={(e) => {
@@ -151,6 +149,53 @@ const EquipmentList = () => {
                     </form>
                 </div>
             )}
+
+            <style jsx>{`
+                .table-container {
+                    margin: 20px 0;
+                    overflow-x: auto;
+                }
+
+                .equipment-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: center;
+                }
+
+                .equipment-table th,
+                .equipment-table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+
+                .equipment-table th {
+                    background-color: maroon;
+                    color: white;
+                    font-weight: bold;
+                }
+
+                .equipment-table tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+
+                .equipment-table tr:hover {
+                    background-color: #ddd;
+                }
+
+                .edit-form {
+                    margin-top: 20px;
+                }
+
+                button {
+                    margin: 0 5px;
+                    padding: 5px 10px;
+                    cursor: pointer;
+                }
+
+                button:hover {
+                    background-color: #2196F3;
+                }
+            `}</style>
         </div>
     );
 };

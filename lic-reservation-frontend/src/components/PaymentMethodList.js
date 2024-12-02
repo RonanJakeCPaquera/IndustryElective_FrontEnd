@@ -4,11 +4,10 @@ import axios from 'axios';
 const PaymentMethodList = () => {
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [counters, setCounters] = useState({});
-    const [editingMethod, setEditingMethod] = useState(null); // State for tracking the editing payment method
+    const [editingMethod, setEditingMethod] = useState(null);
     const [updatedDetails, setUpdatedDetails] = useState({
         paymentAmount: '',
-        paymentDate: '',
-        status: ''
+        paymentDate: ''
     });
 
     useEffect(() => {
@@ -27,20 +26,18 @@ const PaymentMethodList = () => {
         setCounters(initialCounters);
     };
 
-
     const handleEdit = (method) => {
         setEditingMethod(method);
         setUpdatedDetails({
             paymentAmount: method.paymentAmount,
-            paymentDate: new Date(method.paymentDate).toLocaleDateString(), // Assuming you want to display date in a specific format
-            status: method.status
+            paymentDate: new Date(method.paymentDate).toISOString().split('T')[0], // Set date in 'YYYY-MM-DD' format for input
         });
     };
 
     const updatePaymentMethod = async (id, updatedDetails) => {
         await axios.put(`/paymentMethods/updatePaymentMethod/${id}`, updatedDetails);
         fetchPaymentMethods();
-        setEditingMethod(null); // Close the editing form after successful update
+        setEditingMethod(null);
     };
 
     const deletePaymentMethod = async (id) => {
@@ -59,16 +56,32 @@ const PaymentMethodList = () => {
     return (
         <div>
             <h1>Payment Methods</h1>
-            <ul>
-                {paymentMethods.map((method) => (
-                    <li key={method.paymentMethodId}>
-                        <p><strong>({counters[method.paymentMethodId] || 1}) Payment Amount:</strong> {`₱${method.paymentAmount}`}</p>
-                        <p><strong>Payment Date:</strong> {new Date(method.paymentDate).toLocaleDateString()}</p>
-                        <button onClick={() => handleEdit(method)}>Edit</button>
-                        <button onClick={() => deletePaymentMethod(method.paymentMethodId)}>Delete Payment Method</button>
-                    </li>
-                ))}
-            </ul>
+            {/* Payment Methods Table */}
+            <div className="table-container">
+                <table className="equipment-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Payment Amount</th>
+                            <th>Payment Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {paymentMethods.map((method) => (
+                            <tr key={method.paymentMethodId}>
+                                <td>{counters[method.paymentMethodId] || 1}</td>
+                                <td>{`₱${method.paymentAmount}`}</td>
+                                <td>{new Date(method.paymentDate).toLocaleDateString()}</td>
+                                <td>
+                                    <button onClick={() => handleEdit(method)}>Edit</button>
+                                    <button onClick={() => deletePaymentMethod(method.paymentMethodId)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             {/* Editing Form */}
             {editingMethod && (
@@ -100,22 +113,54 @@ const PaymentMethodList = () => {
                                 required
                             />
                         </div>
-                        <div>
-                            <label>Status:</label>
-                            <select
-                                name="status"
-                                value={updatedDetails.status}
-                                onChange={handleChange}
-                            >
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
-                        </div>
                         <button type="submit">Update Payment Method</button>
                         <button type="button" onClick={() => setEditingMethod(null)}>Cancel</button>
                     </form>
                 </div>
             )}
+
+            <style jsx>{`
+                .table-container {
+                    margin: 20px 0;
+                    overflow-x: auto;
+                }
+
+                .equipment-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: center;
+                }
+
+                .equipment-table th,
+                .equipment-table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+
+                .equipment-table th {
+                    background-color: maroon;
+                    color: white;
+                    font-weight: bold;
+                }
+
+                .equipment-table tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+
+                .equipment-table tr:hover {
+                    background-color: #ddd;
+                }
+
+                button {
+                    margin: 0 5px;
+                    padding: 5px 10px;
+                    cursor: pointer;
+                }
+
+                button:hover {
+                    background-color: #2196F3;
+                }
+            `}</style>
         </div>
     );
 };
