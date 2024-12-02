@@ -32,12 +32,13 @@ const ForgotPassword = () => {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 100vh;
-          background-image: url('/Forget.jpg'); /* Background image from public folder */
+          min-height: calc(100vh - 60px); /* Dynamically calculate height minus header and footer */
+          background-image: url('/Forget.jpg'); 
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
-          margin: 0;
+          padding-top: 60px; /* Adjust for header spacing */
+          padding-bottom: 60px; /* Adjust for footer spacing */
         }
 
         .forgot-password-form {
@@ -48,10 +49,11 @@ const ForgotPassword = () => {
           max-width: 400px;
           width: 100%;
           text-align: center;
+          margin-top: 20px;
         }
 
         .forgot-password-form input {
-          width: 100%;
+          width: 95%;
           padding: 10px;
           margin: 10px 0;
           border: 1px solid #ccc;
@@ -78,6 +80,25 @@ const ForgotPassword = () => {
           color: red;
           margin-top: 10px;
         }
+
+        footer {
+          display: flex;
+          justify-content: space-around;
+          align-items: flex-start; /* Top-align footer columns */
+          flex-wrap: wrap;
+          background-color: #333;
+          color: white;
+          padding: 20px 10px; /* Add padding for small screens */
+          position: relative; /* Prevent footer from overlapping */
+          bottom: 0;
+          width: 100%;
+        }
+
+        footer div {
+          flex: 1 1 200px;
+          margin: 10px;
+          text-align: center;
+        }
       `}</style>
 
       <div className="forgot-password-container">
@@ -94,6 +115,31 @@ const ForgotPassword = () => {
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
       </div>
+
+      <footer>
+        <div>
+          <h4>TeknoLib</h4>
+          <p>Contact us</p>
+          <p>TeknoLib@gmail.com</p>
+          <p>+1-2345-6789</p>
+          <p>Cebu Institute of Technology University</p>
+        </div>
+        <div>
+          <h4>Products</h4>
+          <p>Auctor volutpat</p>
+          <p>Fermentum turpis</p>
+          <p>Mi consequat</p>
+          <p>Amet venenatis</p>
+        </div>
+        <div>
+          <h4>About</h4>
+          <p>Cajegas, Angelo</p>
+          <p>Tesaluna, Josh</p>
+          <p>Bacalso, Michael</p>
+          <p>Paquero, Ronan</p>
+          <p>Cagampang, Emmanuel</p>
+        </div>
+      </footer>
     </div>
   );
 };

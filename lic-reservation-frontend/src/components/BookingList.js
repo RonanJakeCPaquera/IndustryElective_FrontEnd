@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MdEdit, MdDelete, MdCheckCircle } from 'react-icons/md';  // Importing Material Design icons
-
+ 
 const BookingList = () => {
     const [bookings, setBookings] = useState([]);
     const [counters, setCounters] = useState({});
     const [editingId, setEditingId] = useState(null); // Tracks the booking being edited
     const [editingBooking, setEditingBooking] = useState(null); // Stores the current booking details being edited
-
+ 
     useEffect(() => {
         fetchBookings();
     }, []);
-
+ 
     const fetchBookings = async () => {
         try {
             const response = await axios.get('/bookings/getAllBookings');
             const bookingsData = response.data;
+ 
+            // Sort bookings by bookingDate and startTime (ascending order)
+            bookingsData.sort((a, b) => {
+                const dateA = new Date(a.bookingDate + 'T' + a.startTime);
+                const dateB = new Date(b.bookingDate + 'T' + b.startTime);
+                return dateA - dateB;
+            });
+ 
             setBookings(bookingsData);
-
+ 
             // Initialize counters with unique IDs from fetched bookings
             const initialCounters = {};
             bookingsData.forEach((booking, index) => {
@@ -28,14 +36,14 @@ const BookingList = () => {
             console.error('Error fetching bookings:', error);
         }
     };
-
+ 
     const incrementCounter = (bookingId) => {
         setCounters((prevCounters) => ({
             ...prevCounters,
             [bookingId]: prevCounters[bookingId] + 1,
         }));
     };
-
+ 
     const updateBooking = async (id, updatedDetails) => {
         try {
             await axios.put(`/bookings/updateBooking/${id}`, updatedDetails);
@@ -45,7 +53,7 @@ const BookingList = () => {
             console.error('Error updating booking:', error);
         }
     };
-
+ 
     const deleteBooking = async (id) => {
         try {
             await axios.delete(`/bookings/deleteBooking/${id}`);
@@ -54,40 +62,40 @@ const BookingList = () => {
             console.error('Error deleting booking:', error);
         }
     };
-
+ 
     const formatDateTime = (dateString, timeString) => {
         const date = new Date(dateString);
         const time = new Date(`1970-01-01T${timeString}`);
-
+ 
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = date.toLocaleDateString(undefined, options);
-
+ 
         const hours = time.getHours();
         const minutes = time.getMinutes();
         const ampm = hours >= 12 ? 'pm' : 'am';
         const formattedHours = hours % 12 || 12; // Convert to 12-hour format
         const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
-
+ 
         return `${formattedDate} at ${formattedHours}:${formattedMinutes} ${ampm}`;
     };
-
+ 
     const startEdit = (booking) => {
         setEditingId(booking.bookingId); // Set the ID of the booking being edited
         setEditingBooking({ ...booking }); // Clone the booking into the editing state
     };
-
+ 
     const handleEditChange = (field, value) => {
         setEditingBooking((prev) => ({
             ...prev,
             [field]: value, // Update the specific field
         }));
     };
-
+ 
     const cancelEdit = () => {
         setEditingId(null); // Exit edit mode
         setEditingBooking(null); // Clear editing state
     };
-
+ 
     return (
         <div className="booking-list-container">
             <h1>Booking System</h1>
@@ -132,9 +140,6 @@ const BookingList = () => {
                                             onChange={(e) => handleEditChange('email', e.target.value)}
                                         />
                                     </td>
-                                    <td>
-                                        
-                                    </td>
                                     <td>{formatDateTime(booking.bookingDate, booking.startTime)}</td>
                                     <td>{formatDateTime(booking.bookingDate, booking.endTime)}</td>
                                     <td>{booking.status}</td>
@@ -152,7 +157,7 @@ const BookingList = () => {
                                     <td>{counters[booking.bookingId] || 1}</td>
                                     <td>{booking.name}</td>
                                     <td>{booking.contactNumber}</td>
-                                    <td>{booking.email}</td>                                    
+                                    <td>{booking.email}</td>
                                     <td>{formatDateTime(booking.bookingDate, booking.startTime)}</td>
                                     <td>{formatDateTime(booking.bookingDate, booking.endTime)}</td>
                                     <td>{booking.status}</td>
@@ -182,5 +187,5 @@ const BookingList = () => {
         </div>
     );
 };
-
+ 
 export default BookingList;

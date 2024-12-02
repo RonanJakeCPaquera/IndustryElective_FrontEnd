@@ -33,27 +33,29 @@ const Login = ({ onLoginSuccess }) => {
   };
 
   const containerStyle = {
-    backgroundImage: `url('/Wildcats.jpg')`, // Specify your image file here
+    backgroundImage: `url('/Wildcats.jpg')`, // Retain your original background image
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column',
   };
 
   const formStyle = {
-    background: 'rgba(255, 255, 255, 0.9)', // Semi-transparent white background
+    background: 'rgba(255, 255, 255, 0.9)',
     padding: '30px',
     borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     width: '100%',
     maxWidth: '400px',
     textAlign: 'center',
+    marginTop: '480px'
   };
 
   const inputStyle = {
-    width: '100%',
+    width: '95%',
     padding: '10px',
     margin: '10px 0',
     borderRadius: '4px',
@@ -124,6 +126,44 @@ const Login = ({ onLoginSuccess }) => {
           </button>
         </p>
       </form>
+
+      {/* Flexible Footer */}
+      <footer
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          backgroundColor: '#333',
+          color: 'white',
+          padding: '20px',
+          width: '100%',
+          marginTop: '135px'
+        }}
+      >
+        <div style={{ flex: '1 1 200px', margin: '10px', textAlign: 'center' }}>
+          <h4>TeknoLib</h4>
+          <p>Contact us</p>
+          <p>TeknoLib@gmail.com</p>
+          <p>+1-2345-6789</p>
+          <p>Cebu Institute of Technology University</p>
+        </div>
+        <div style={{ flex: '1 1 200px', margin: '10px', textAlign: 'center' }}>
+          <h4>Products</h4>
+          <p>Auctor volutpat</p>
+          <p>Fermentum turpis</p>
+          <p>Mi consequat</p>
+          <p>Amet venenatis</p>
+        </div>
+        <div style={{ flex: '1 1 200px', margin: '10px', textAlign: 'center' }}>
+          <h4>About</h4>
+          <p>Cajegas, Angelo</p>
+          <p>Tesaluna, Josh</p>
+          <p>Bacalso, Michael</p>
+          <p>Paquero, Ronan</p>
+          <p>Cagampang, Emmanuel</p>
+        </div>
+      </footer>
     </div>
   );
 };
