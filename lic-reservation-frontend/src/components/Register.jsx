@@ -1,29 +1,34 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+ 
 const Register = () => {
   const [userDetails, setUserDetails] = useState({ email: '', username: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
+ 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   };
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-
+ 
     try {
       await axios.post('/api/auth/register', userDetails);
+     
+      // Save username to localStorage after successful registration
+      localStorage.setItem('userName', userDetails.username);
+      localStorage.setItem('loggedIn', 'true'); // Set login status to true
+     
       navigate('/login'); // Redirect to login after successful registration
     } catch (error) {
       setErrorMessage('Registration failed. Please try again.');
     }
   };
-
+ 
   const footerStyle = {
     backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark background
     color: 'white', // Light text
@@ -37,17 +42,17 @@ const Register = () => {
     maxWidth: '2200px', // Limit the maximum width
     marginTop: '0px', // Added space above the footer
   };
-
+ 
   const columnStyle = {
     flex: '1 1 200px', // Flexible width, min 200px
     marginBottom: '10px',
   };
-
+ 
   const headingStyle = {
     fontWeight: 'bold',
     marginBottom: '10px',
   };
-
+ 
   return (
     <div>
       <style>{`
@@ -63,7 +68,7 @@ const Register = () => {
           background-repeat: no-repeat;
           margin: 0;
         }
-
+ 
         .auth-form {
           background-color: rgba(255, 255, 255, 0.9);
           padding: 20px;
@@ -73,7 +78,7 @@ const Register = () => {
           width: 500px;
           text-align: center;
         }
-
+ 
         .auth-form input {
           width: 95%;
           padding: 10px;
@@ -82,7 +87,7 @@ const Register = () => {
           border-radius: 5px;
           font-size: 16px;
         }
-
+ 
         .auth-form button {
           width: 100%;
           padding: 10px;
@@ -93,26 +98,26 @@ const Register = () => {
           font-size: 16px;
           cursor: pointer;
         }
-
+ 
         .auth-form button:hover {
           background-color: #0056b3;
         }
-
+ 
         .error-message {
           color: red;
           margin-top: 10px;
         }
-
+ 
         .auth-link {
           color: #007bff;
           cursor: pointer;
         }
-
+ 
         .auth-link:hover {
           text-decoration: underline;
         }
       `}</style>
-
+ 
       <div className="auth-container">
         <form className="auth-form" onSubmit={handleSubmit}>
           <h2>Register</h2>
@@ -150,7 +155,7 @@ const Register = () => {
           </p>
         </form>
       </div>
-
+ 
       {/* Footer */}
       <footer style={footerStyle}>
         {/* Column 1 */}
@@ -161,7 +166,7 @@ const Register = () => {
           <p>+1-2345-6789</p>
           <p>Cebu Institute of Technology University</p>
         </div>
-
+ 
         {/* Column 2 */}
         <div style={columnStyle}>
           <h4 style={headingStyle}>Products</h4>
@@ -170,7 +175,7 @@ const Register = () => {
           <p>Mi consequat</p>
           <p>Amet venenatis</p>
         </div>
-
+ 
         {/* Column 3 */}
         <div style={columnStyle}>
           <h4 style={headingStyle}>About</h4>
@@ -178,11 +183,11 @@ const Register = () => {
           <p>Tesaluna, Josh</p>
           <p>Bacalso, Michael</p>
           <p>Paquero, Ronan</p>
-          <p>Cagampang, Emmanuel</p>
+          <p>Cagampang, Emmanuel Jr.</p>
         </div>
       </footer>
     </div>
   );
 };
-
+ 
 export default Register;

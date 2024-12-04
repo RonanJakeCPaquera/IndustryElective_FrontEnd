@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './CreateEquipment.css';
@@ -7,67 +7,67 @@ function CreateEquipment() {
   const [equipmentData, setEquipmentData] = useState({
     name: '',
     quantity: 1,
-    type: '', // Defaults to an empty string for validation
+    type: '',
   });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const isNotEmpty = (obj) => Object.keys(obj).length > 0;
+  useEffect(() => {
+    const hasData = JSON.parse(localStorage.getItem('equipmentData') ?? '{}');
+    if (isNotEmpty(hasData)) {
+      navigate('/payment-method-management');
+    }
+  }, [navigate]);
 
-  const options = [{
-    value: 'computer_lab',
-    label: 'Computer Lab - PHP 50.00',
-  }, {
-    value: 'vr_sim',
-    label: 'VR Simulator - PHP 30.00',
-  },  {
-    value: 'driving_sim',
-    label: 'Driving Simulator - PHP 40.00',
-  }, {
-    value: 'discuss_room',
-    label: 'Discussion Room - PHP 20.00',
-  }];
+  const options = [
+    { value: 'computer_lab', label: 'Computer Lab - PHP 50.00' },
+    { value: 'vr_sim', label: 'VR Simulator - PHP 30.00' },
+    { value: 'driving_sim', label: 'Driving Simulator - PHP 40.00' },
+    { value: 'discuss_room', label: 'Discussion Room - PHP 20.00' },
+  ];
 
-  console.log(equipmentData);
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    axios
-      .post('/equipments/createEquipment', equipmentData)
-      .then(() => {
-        let amount = 50;
+    if (equipmentData.quantity <= 0 || isNaN(equipmentData.quantity)) {
+      setMessage('Quantity must be a positive number');
+      return;
+    }
 
-        switch (equipmentData.type) {
-          case 'computer_lab':
-            amount = 50;
-            break;
-          case 'vr_sim':
-            amount = 30;
-            break;
-          case 'driving_sim':
-            amount = 40;
-            break;
-          case 'discuss_room':
-            amount = 20;
-            break;
-          default:
-            amount = 0;
-            break;
-        }
-        
-        setMessage('Equipment created successfully!');
-        
-        setTimeout(() => navigate('/payment-method-management', {
+    try {
+      await axios.post('/equipments/createEquipment', equipmentData);
+
+
+      const prices = {
+        computer_lab: 50,
+        vr_sim: 30,
+        driving_sim: 40,
+        discuss_room: 20,
+      };
+
+      const amount = prices[equipmentData.type] * equipmentData.quantity;
+
+      localStorage.setItem('equipmentData', JSON.stringify( {
+        paymentAmount: amount,
+        paymentDate: new Date().toISOString().split('T')[0],
+      })); 
+
+      setMessage('Equipment created successfully!');
+
+      setTimeout(() => {
+        navigate('/payment-method-management', {
           state: {
             paymentData: {
-              paymentAmount: amount * equipmentData.quantity,
+              paymentAmount: amount,
               paymentDate: new Date().toISOString().split('T')[0],
-            }
-          }
-        }), 1500); // Redirect after success
-      })
-      .catch(() => {
-        setMessage('Error creating equipment');
-      });
+            },
+          },
+        });
+      }, 1500);
+    } catch (error) {
+      setMessage('Error creating equipment. Please try again.');
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -80,7 +80,9 @@ function CreateEquipment() {
           type="text"
           placeholder="Enter Equipment Name"
           value={equipmentData.name}
-          onChange={(e) => setEquipmentData({ ...equipmentData, name: e.target.value })}
+          onChange={(e) =>
+            setEquipmentData({ ...equipmentData, name: e.target.value })
+          }
           required
         />
 
@@ -90,16 +92,23 @@ function CreateEquipment() {
           type="number"
           placeholder="Enter Equipment Quantity"
           value={equipmentData.quantity}
-          onChange={(e) => setEquipmentData({ ...equipmentData, quantity: parseInt(e.target.value) })}
+          onChange={(e) =>
+            setEquipmentData({
+              ...equipmentData,
+              quantity: parseInt(e.target.value) || 1,
+            })
+          }
           min="1"
           required
         />
 
-        {/* Equipment Type (Dropdown) */}
+        {/* Equipment Type */}
         <label>Equipment Type:</label>
         <select
           value={equipmentData.type}
-          onChange={(e) => setEquipmentData({ ...equipmentData, type: e.target.value })}
+          onChange={(e) =>
+            setEquipmentData({ ...equipmentData, type: e.target.value })
+          }
           required
         >
           <option value="" disabled>
@@ -110,14 +119,21 @@ function CreateEquipment() {
               {option.label}
             </option>
           ))}
-          
         </select>
 
         <button type="submit">Next</button>
       </form>
 
       {/* Feedback Message */}
-      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
+      {message && (
+        <p
+          className={`message ${
+            message.includes('successfully') ? 'success' : 'error'
+          }`}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }

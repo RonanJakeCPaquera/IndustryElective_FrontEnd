@@ -4,27 +4,33 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './CreatePaymentMethod.css';
 
 function CreatePaymentMethod() {
-  const [paymentData, setPaymentData] = useState({
-    paymentAmount: 0,
-    paymentDate: '',
-  });
-
   const { state } = useLocation();
+  const [paymentData, setPaymentData] = useState({
+    paymentAmount: state?.paymentData?.paymentAmount || 0,
+    paymentDate: state?.paymentData?.paymentDate || '',
+  });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const isNotEmpty = (obj) => Object.keys(obj).length > 0;
 
-  // Initialize payment data from state if available
   useEffect(() => {
-    if (state && state.paymentData) {
-      setPaymentData(state.paymentData);
+    const equipmentData = JSON.parse(localStorage.getItem('equipmentData'));
+    const hasPaymentData = JSON.parse(localStorage.getItem('paymentData')); 
+    if (isNotEmpty(equipmentData)) {
+      setPaymentData(equipmentData);
+      
     }
-  }, [state]);
 
+    console.log(equipmentData)
 
-  const handleSubmit = (event) => {
+    if (hasPaymentData) {
+      navigate('/summary');
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate payment amount and date
     if (paymentData.paymentAmount <= 0) {
       setMessage('Payment amount must be greater than zero.');
       return;
@@ -35,43 +41,54 @@ function CreatePaymentMethod() {
       return;
     }
 
-    axios
-      .post('/paymentMethods/createPaymentMethod', paymentData)
-      .then(() => {
-        setMessage('Payment method created successfully!');
-        setTimeout(() => navigate('/summary'), 1500); // Redirect to summary after success
-      })
-      .catch(() => {
-        setMessage('Error creating payment method');
-      });
+    try {
+      await axios.post('/paymentMethods/createPaymentMethod', paymentData);
+      localStorage.setItem('paymentData', true);
+
+      // Remove other data after successful submission
+      localStorage.removeItem('studentData');
+      localStorage.removeItem('equipmentData');
+      localStorage.removeItem('reservationData');
+      localStorage.removeItem('bookingData');
+      localStorage.removeItem('paymentData');
+
+      setMessage('Payment method created successfully!');
+      setTimeout(() => navigate('/summary'), 1500);
+    } catch (error) {
+      setMessage('Error creating payment method. Please try again.');
+    }
   };
-
-  // const handleStartAgain = () => {
-  //   navigate('/student-management'); // Redirect to start over
-  // };
-
 
   return (
     <div className="payment-method-container">
       <h2>Create Payment Method</h2>
       <form className="payment-method-form" onSubmit={handleSubmit}>
         {/* Payment Amount */}
-        <label>Payment Amount:</label>
+        <label htmlFor="paymentAmount">Payment Amount:</label>
         <input
+          id="paymentAmount"
           type="number"
           placeholder="Enter Payment Amount"
           value={paymentData.paymentAmount}
-          onChange={(e) => setPaymentData({ ...paymentData, paymentAmount: parseFloat(e.target.value) })}
+          onChange={(e) =>
+            setPaymentData({
+              ...paymentData,
+              paymentAmount: parseFloat(e.target.value) || 0,
+            })
+          }
           min="0"
           required
         />
 
         {/* Payment Date */}
-        <label>Payment Date:</label>
+        <label htmlFor="paymentDate">Payment Date:</label>
         <input
+          id="paymentDate"
           type="date"
           value={paymentData.paymentDate}
-          onChange={(e) => setPaymentData({ ...paymentData, paymentDate: e.target.value })}
+          onChange={(e) =>
+            setPaymentData({ ...paymentData, paymentDate: e.target.value })
+          }
           required
         />
 
@@ -81,12 +98,15 @@ function CreatePaymentMethod() {
       </form>
 
       {/* Feedback Message */}
-      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
-
-      {/* Start Again Button */}
-      {/* <button onClick={handleStartAgain} className="start-again-button">
-        Start Again
-      </button> */}
+      {message && (
+        <p
+          className={`message ${
+            message.includes('successfully') ? 'success' : 'error'
+          }`}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }

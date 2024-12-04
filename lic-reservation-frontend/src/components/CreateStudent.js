@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './CreateStudent.css';
@@ -7,6 +7,14 @@ function CreateStudent() {
   const [studentData, setStudentData] = useState({ name: '', program: '', year: '' });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const hasData = localStorage.getItem('studentData');
+
+    if (hasData) {
+      navigate('/reservation-management')
+    }
+  }, [navigate]);
 
   const programs = [
     "Bachelor of Science in Architecture",
@@ -58,7 +66,8 @@ function CreateStudent() {
 
     axios
       .post('/students/createStudent', studentData)
-      .then(() => {
+      .then(() => { 
+        localStorage.setItem('studentData', true);
         setMessage('Student created successfully!');
         setTimeout(() => navigate('/reservation-management'), 1500); // Redirect after 1.5s
       })

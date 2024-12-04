@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './CreateReservation.css';
 
 function CreateReservation() {
   const [reservationData, setReservationData] = useState({ reservationDate: '', reservationTime: '', status: 'Pending' });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+ 
+  useEffect(() => {
+    const hasData = localStorage.getItem('reservationData');
+
+    if (hasData) {
+      navigate('/booking-management')
+    }
+  }, [navigate]);
+  // Middleware to check authentication
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -14,6 +24,7 @@ function CreateReservation() {
     axios
       .post('/reservations/createReservation', reservationData)
       .then(() => {
+        localStorage.setItem('reservationData', true);
         setMessage('Reservation created successfully!');
         setTimeout(() => navigate('/booking-management'), 1500); // Redirect after 1.5s
       })
@@ -24,6 +35,13 @@ function CreateReservation() {
 
   return (
     <div className="create-reservation-container">
+      {/* Navigation Bar */}
+      <nav className="navbar">
+        <ul>
+          
+        </ul>
+      </nav>
+
       <h2>Create Reservation</h2>
       <form className="create-reservation-form" onSubmit={handleSubmit}>
         <label>Reservation Date:</label>
