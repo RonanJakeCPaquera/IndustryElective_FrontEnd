@@ -70,7 +70,7 @@ const Login = ({ onLoginSuccess }) => {
   const buttonStyle = {
     width: '100%',
     padding: '10px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#fbbf24',
     color: 'white',
     border: 'none',
     borderRadius: '4px',

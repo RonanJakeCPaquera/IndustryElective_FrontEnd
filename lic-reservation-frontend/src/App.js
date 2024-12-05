@@ -1,98 +1,117 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
 import './App.css';
- 
+
 // Import components
 import CreateStudent from './components/CreateStudent';
-// import StudentList from './components/StudentList';
 import CreateReservation from './components/CreateReservation';
-// import ReservationList from './components/ReservationList';
 import CreateBooking from './components/CreateBooking';
 import BookingList from './components/BookingList';
 import CreatePaymentMethod from './components/CreatePaymentMethod';
-// import PaymentMethodList from './components/PaymentMethodList';
 import CreateEquipment from './components/CreateEquipment';
-// import EquipmentList from './components/EquipmentList';
 import Login from './components/Login';
 import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import SummaryPage from './components/SummaryPage';
-import PhotoGallery from './components/PhotoGallery'; // Import the Photo Gallery component
- 
-// Background and content styling
-const containerStyle = {
-  backgroundImage: "url('/HomePage.jpg')",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  minHeight: "100vh", // Full viewport height
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "20px 0",
-};
- 
-const contentStyle = {
-  color: '#FFFFFF',
-  padding: "20px",
-  borderRadius: "10px",
-  backgroundColor: "rgba(0, 0, 0, 0.6)", // Semi-transparent black background for readability
-  maxWidth: "800px",
-  textAlign: "center",
-};
- 
-const headingStyle = {
-  fontSize: "2.5rem", // Larger font size for the heading
-  marginBottom: "10px",
-};
- 
-const paragraphStyle = {
-  fontSize: "1.2rem", // Slightly larger font size for paragraphs
-  lineHeight: "1.5", // Improve readability
-};
- 
-const buttonStyle = {
-  marginTop: "20px",
-  padding: "10px 20px",
-  backgroundColor: "#ff8c00",
-  color: "#FFFFFF",
-  border: "none",
-  borderRadius: "5px",
-  fontSize: "1rem",
-  cursor: "pointer",
-};
- 
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
     const savedLoggedIn = localStorage.getItem('loggedIn');
     return savedLoggedIn === 'true'; // Convert string to boolean
   });
- 
+
   const userName = localStorage.getItem('userName') || 'Guest'; // Retrieve the username from localStorage (default to 'Guest')
- 
+
   const handleLogin = () => {
     setLoggedIn(true);
     localStorage.setItem('loggedIn', 'true');
   };
- 
+
   const handleLogout = () => {
     setLoggedIn(false);
     localStorage.setItem('loggedIn', 'false');
     localStorage.removeItem('userName');
     alert('You have been logged out.');
   };
- 
+
   const ProtectedRoute = ({ children }) => {
     return loggedIn ? children : <Navigate to="/login" />;
   };
- 
+
   const Home = () => {
     const navigate = useNavigate();
- 
+
+    // Array of background images
+    const backgroundImages = [
+      '/images/photo7.jpg',
+      '/images/photo2.jpg',
+      '/images/photo3.jpg',
+      '/images/photo6.jpg',
+      '/images/photo8.jpg',
+      '/images/photo3.jpg',
+      '/images/photo9.jpg',
+      '/images/photo5.jpg',
+      '/HomePage.jpg',
+     
+    ];
+
+    // State to manage current background image index
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    // Change background image every 5 seconds
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
+      }, 5000); // 5000ms = 5 seconds
+      return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, [backgroundImages.length]);
+
+    const containerStyle = {
+      backgroundImage: `url(${backgroundImages[currentImageIndex]})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', // Full viewport height
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '20px 0',
+    };
+
+    const contentStyle = {
+      color: '#FFFFFF',
+      padding: '20px',
+      borderRadius: '10px',
+      backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black background for readability
+      maxWidth: '800px',
+      textAlign: 'center',
+    };
+
+    const headingStyle = {
+      fontSize: '2.5rem', // Larger font size for the heading
+      marginBottom: '10px',
+    };
+
+    const paragraphStyle = {
+      fontSize: '1.2rem', // Slightly larger font size for paragraphs
+      lineHeight: '1.5', // Improve readability
+    };
+
+    const buttonStyle = {
+      marginTop: '20px',
+      padding: '10px 20px',
+      backgroundColor: '#ff8c00',
+      color: '#FFFFFF',
+      border: 'none',
+      borderRadius: '5px',
+      fontSize: '1rem',
+      cursor: 'pointer',
+    };
+
     const handleStartBooking = () => {
       navigate('/student-management');
     };
- 
+
     return (
       <div style={containerStyle}>
         {/* Welcome Section */}
@@ -106,7 +125,7 @@ function App() {
             Start Booking
           </button>
         </div>
- 
+
         {/* Key Features Section */}
         <section className="features" style={{ marginTop: '40px' }}>
           <h2 style={{ color: '#FFFFFF', textAlign: 'center', marginBottom: '20px' }}>Key Features</h2>
@@ -149,15 +168,10 @@ function App() {
             </div>
           </div>
         </section>
- 
-        {/* Photo Gallery Section */}
-        <section className="photo-gallery-section" style={{ marginTop: '40px' }}>
-          <PhotoGallery />
-        </section>
       </div>
     );
   };
- 
+
   return (
     <Router>
       <div className="App">
@@ -169,8 +183,6 @@ function App() {
             {loggedIn && <Link to="/student-management">Booking</Link>}
             {loggedIn && <Link to="/summary">Summary</Link>}
             {!loggedIn && <Link to="/login">Login</Link>}
-            {!loggedIn && <Link to="/register">Register</Link>}
-            {!loggedIn && <Link to="/forgot-password">Forgot Password</Link>}
             {loggedIn && (
               <button onClick={handleLogout} className="logout-button">
                 Logout
@@ -178,7 +190,7 @@ function App() {
             )}
           </nav>
         </header>
- 
+
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />
@@ -186,7 +198,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
- 
+
           {/* Protected routes */}
           <Route
             path="/student-management"
@@ -242,5 +254,5 @@ function App() {
     </Router>
   );
 }
- 
+
 export default App;

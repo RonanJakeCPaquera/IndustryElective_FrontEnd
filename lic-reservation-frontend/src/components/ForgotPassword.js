@@ -64,7 +64,7 @@ const ForgotPassword = () => {
         .forgot-password-form button {
           width: 100%;
           padding: 10px;
-          background-color: #007bff;
+          background-color: #fbbf24;
           color: white;
           border: none;
           border-radius: 5px;

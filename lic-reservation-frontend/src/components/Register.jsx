@@ -3,7 +3,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
  
 const Register = () => {
-  const [userDetails, setUserDetails] = useState({ email: '', username: '', password: '' });
+  const [userDetails, setUserDetails] = useState({
+    email: '',
+    username: '',
+    password: '',
+    code: '', // Code entered by the user
+  });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
  
@@ -16,13 +21,23 @@ const Register = () => {
     e.preventDefault();
     setErrorMessage('');
  
+    // Check if the verification code is correct
+    if (userDetails.code !== '12345') {
+      setErrorMessage('Invalid verification code. Please try again.');
+      return; // Prevent form submission
+    }
+ 
     try {
-      await axios.post('/api/auth/register', userDetails);
-     
+      await axios.post('/api/auth/register', {
+        email: userDetails.email,
+        username: userDetails.username,
+        password: userDetails.password,
+      });
+ 
       // Save username to localStorage after successful registration
       localStorage.setItem('userName', userDetails.username);
       localStorage.setItem('loggedIn', 'true'); // Set login status to true
-     
+ 
       navigate('/login'); // Redirect to login after successful registration
     } catch (error) {
       setErrorMessage('Registration failed. Please try again.');
@@ -91,7 +106,7 @@ const Register = () => {
         .auth-form button {
           width: 100%;
           padding: 10px;
-          background-color: #007bff;
+          background-color: #fbbf24;
           color: white;
           border: none;
           border-radius: 5px;
@@ -142,6 +157,14 @@ const Register = () => {
             name="password"
             placeholder="Password"
             value={userDetails.password}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="text"
+            name="code"
+            placeholder="Enter Verification Code"
+            value={userDetails.code}
             onChange={handleInputChange}
             required
           />
