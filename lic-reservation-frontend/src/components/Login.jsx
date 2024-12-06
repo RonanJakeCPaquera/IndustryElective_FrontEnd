@@ -56,7 +56,6 @@ const Login = ({ onLoginSuccess }) => {
     width: '100%',
     maxWidth: '400px',
     textAlign: 'center',
-    marginTop: '480px'
   };
  
   const inputStyle = {
@@ -131,44 +130,6 @@ const Login = ({ onLoginSuccess }) => {
           </button>
         </p>
       </form>
- 
-      {/* Flexible Footer */}
-      <footer
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          backgroundColor: '#333',
-          color: 'white',
-          padding: '20px',
-          width: '100%',
-          marginTop: '135px'
-        }}
-      >
-        <div style={{ flex: '1 1 200px', margin: '10px', textAlign: 'center' }}>
-          <h4>TeknoLib</h4>
-          <p>Contact us</p>
-          <p>TeknoLib@gmail.com</p>
-          <p>+1-2345-6789</p>
-          <p>Cebu Institute of Technology University</p>
-        </div>
-        <div style={{ flex: '1 1 200px', margin: '10px', textAlign: 'center' }}>
-          <h4>Products</h4>
-          <p>Auctor volutpat</p>
-          <p>Fermentum turpis</p>
-          <p>Mi consequat</p>
-          <p>Amet venenatis</p>
-        </div>
-        <div style={{ flex: '1 1 200px', margin: '10px', textAlign: 'center' }}>
-          <h4>About</h4>
-          <p>Cajegas, Angelo</p>
-          <p>Tesaluna, Josh</p>
-          <p>Bacalso, Michael</p>
-          <p>Paquero, Ronan</p>
-          <p>Cagampang, Emmanuel</p>
-        </div>
-      </footer>
     </div>
   );
 };

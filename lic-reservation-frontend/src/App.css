@@ -200,3 +200,27 @@ body {
     font-size: 0.9rem;
   }
 }
+
+.footer {
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.footer div {
+  margin: 10px;
+  flex: 1 1 200px;
+}
+
+.footer a {
+  color: #ff8c00;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

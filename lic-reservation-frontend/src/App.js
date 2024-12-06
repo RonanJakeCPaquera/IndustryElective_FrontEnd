@@ -42,7 +42,6 @@ function App() {
   const Home = () => {
     const navigate = useNavigate();
 
-    // Array of background images
     const backgroundImages = [
       '/images/photo7.jpg',
       '/images/photo2.jpg',
@@ -53,25 +52,22 @@ function App() {
       '/images/photo9.jpg',
       '/images/photo5.jpg',
       '/HomePage.jpg',
-     
     ];
 
-    // State to manage current background image index
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-    // Change background image every 5 seconds
     useEffect(() => {
       const interval = setInterval(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
-      }, 5000); // 5000ms = 5 seconds
-      return () => clearInterval(interval); // Cleanup interval on component unmount
+      }, 5000);
+      return () => clearInterval(interval);
     }, [backgroundImages.length]);
 
     const containerStyle = {
       backgroundImage: `url(${backgroundImages[currentImageIndex]})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      minHeight: '100vh', // Full viewport height
+      minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -82,21 +78,11 @@ function App() {
       color: '#FFFFFF',
       padding: '20px',
       borderRadius: '10px',
-      backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black background for readability
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
       maxWidth: '800px',
       textAlign: 'center',
     };
-
-    const headingStyle = {
-      fontSize: '2.5rem', // Larger font size for the heading
-      marginBottom: '10px',
-    };
-
-    const paragraphStyle = {
-      fontSize: '1.2rem', // Slightly larger font size for paragraphs
-      lineHeight: '1.5', // Improve readability
-    };
-
+    
     const buttonStyle = {
       marginTop: '20px',
       padding: '10px 20px',
@@ -114,16 +100,16 @@ function App() {
 
     return (
       <div style={containerStyle}>
-        {/* Welcome Section */}
         <div style={contentStyle}>
-          <h1 style={headingStyle}>Welcome to LIC Management System</h1>
-          <p style={paragraphStyle}>
+          <h1>Welcome to LIC Management System</h1>
+          <p>
             Simplify reservation management for students and staff with our easy-to-use system. Track equipment, manage
             bookings, and ensure efficient operations!
           </p>
           <button onClick={handleStartBooking} style={buttonStyle}>
             Start Booking
           </button>
+
         </div>
 
         {/* Key Features Section */}
@@ -172,14 +158,30 @@ function App() {
     );
   };
 
+  const footerStyle = {
+    backgroundColor: '#333',
+    color: '#fff',
+    textAlign: 'center',
+    padding: '20px 0',
+    marginTop: 'auto',
+    display: 'flex',
+    justifyContent: 'space-around',
+  };
+
+  const footerColumnStyle = {
+    flex: '1 1 200px',
+    margin: '10px',
+    textAlign: 'center',
+  };
+
   return (
     <Router>
       <div className="App">
         <header className="header">
-          <h1>LIC Management System</h1>
+        <img src="../logo.png" alt="Logo" style={{ width: '100px', height: 'auto' }} />
           <nav className="nav-buttons">
             <Link to="/">Home</Link>
-            {loggedIn && <span className="user-greeting">Hello, {userName}!</span>} {/* Display username */}
+            {loggedIn && <span className="user-greeting">Hello, {userName}!</span>}
             {loggedIn && <Link to="/student-management">Booking</Link>}
             {loggedIn && <Link to="/summary">Summary</Link>}
             {!loggedIn && <Link to="/login">Login</Link>}
@@ -192,14 +194,12 @@ function App() {
         </header>
 
         <Routes>
-          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login onLoginSuccess={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
-          {/* Protected routes */}
           <Route
             path="/student-management"
             element={
@@ -250,6 +250,32 @@ function App() {
             }
           />
         </Routes>
+
+        {/* Static Footer */}
+        <footer style={footerStyle}>
+          <div style={footerColumnStyle}>
+            <h4>TeknoLib</h4>
+            <p>Contact us</p>
+            <p>TeknoLib@gmail.com</p>
+            <p>+1-2345-6789</p>
+            <p>Cebu Institute of Technology University</p>
+          </div>
+          <div style={footerColumnStyle}>
+            <h4>Products</h4>
+            <p>Auctor volutpat</p>
+            <p>Fermentum turpis</p>
+            <p>Mi consequat</p>
+            <p>Amet venenatis</p>
+          </div>
+          <div style={footerColumnStyle}>
+            <h4>About</h4>
+            <p>Cajegas, Angelo</p>
+            <p>Tesaluna, Josh</p>
+            <p>Bacalso, Michael</p>
+            <p>Paquero, Ronan</p>
+            <p>Cagampang, Emmanuel</p>
+          </div>
+        </footer>
       </div>
     </Router>
   );

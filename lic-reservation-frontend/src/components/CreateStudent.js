@@ -12,7 +12,7 @@ function CreateStudent() {
     const hasData = localStorage.getItem('studentData');
 
     if (hasData) {
-      navigate('/reservation-management')
+      navigate('/reservation-management');
     }
   }, [navigate]);
 
@@ -77,46 +77,48 @@ function CreateStudent() {
   };
 
   return (
-    <div className="create-student-container">
-      <h2>Create Student</h2>
-      <form className="create-student-form" onSubmit={handleSubmit}>
-        <label>Name:</label>
-        <input
-          type="text"
-          value={studentData.name}
-          onChange={(e) => setStudentData({ ...studentData, name: e.target.value })}
-          placeholder="Enter student name"
-          required
-        />
-        <label>Program:</label>
-        <select
-          value={studentData.program}
-          onChange={(e) => setStudentData({ ...studentData, program: e.target.value })}
-          required
-        >
-          <option value="" disabled>CHOOSE PROGRAM</option>
-          {programs.map((program, index) => (
-            <option key={index} value={program}>
-              {program}
-            </option>
-          ))}
-        </select>
-        <label>Year:</label>
-        <select
-          value={studentData.year}
-          onChange={(e) => setStudentData({ ...studentData, year: e.target.value })}
-          required
-        >
-          <option value="" disabled>Year</option>
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Next</button>
-      </form>
-      {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
+    <div className="create-student-wrapper">
+      <div className="create-student-container">
+        <h2>Create Student</h2>
+        <form className="create-student-form" onSubmit={handleSubmit}>
+          <label>Name:</label>
+          <input
+            type="text"
+            value={studentData.name}
+            onChange={(e) => setStudentData({ ...studentData, name: e.target.value })}
+            placeholder="Enter student name"
+            required
+          />
+          <label>Program:</label>
+          <select
+            value={studentData.program}
+            onChange={(e) => setStudentData({ ...studentData, program: e.target.value })}
+            required
+          >
+            <option value="" disabled>CHOOSE PROGRAM</option>
+            {programs.map((program, index) => (
+              <option key={index} value={program}>
+                {program}
+              </option>
+            ))}
+          </select>
+          <label>Year:</label>
+          <select
+            value={studentData.year}
+            onChange={(e) => setStudentData({ ...studentData, year: e.target.value })}
+            required
+          >
+            <option value="" disabled>Year</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+          <button type="submit">Next</button>
+        </form>
+        {message && <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>}
+      </div>
     </div>
   );
 }

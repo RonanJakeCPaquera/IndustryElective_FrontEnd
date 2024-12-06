@@ -6,7 +6,7 @@
   min-height: 100vh;
   background-color: #f7f9fc;
   padding: 2rem;
-  background-image: url('../../public/images/photo4.jpg'); /* Correct path */
+  background-image: url('/public/HomePage.jpg'); /* Correct path */
   background-size: cover; /* Optional: Adjusts the background size */
   background-position: center center; /* Optional: Centers the image */
 }

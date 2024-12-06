@@ -80,25 +80,6 @@ const ForgotPassword = () => {
           color: red;
           margin-top: 10px;
         }
-
-        footer {
-          display: flex;
-          justify-content: space-around;
-          align-items: flex-start; /* Top-align footer columns */
-          flex-wrap: wrap;
-          background-color: #333;
-          color: white;
-          padding: 20px 10px; /* Add padding for small screens */
-          position: relative; /* Prevent footer from overlapping */
-          bottom: 0;
-          width: 100%;
-        }
-
-        footer div {
-          flex: 1 1 200px;
-          margin: 10px;
-          text-align: center;
-        }
       `}</style>
 
       <div className="forgot-password-container">
@@ -115,31 +96,6 @@ const ForgotPassword = () => {
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
       </div>
-
-      <footer>
-        <div>
-          <h4>TeknoLib</h4>
-          <p>Contact us</p>
-          <p>TeknoLib@gmail.com</p>
-          <p>+1-2345-6789</p>
-          <p>Cebu Institute of Technology University</p>
-        </div>
-        <div>
-          <h4>Products</h4>
-          <p>Auctor volutpat</p>
-          <p>Fermentum turpis</p>
-          <p>Mi consequat</p>
-          <p>Amet venenatis</p>
-        </div>
-        <div>
-          <h4>About</h4>
-          <p>Cajegas, Angelo</p>
-          <p>Tesaluna, Josh</p>
-          <p>Bacalso, Michael</p>
-          <p>Paquero, Ronan</p>
-          <p>Cagampang, Emmanuel</p>
-        </div>
-      </footer>
     </div>
   );
 };
