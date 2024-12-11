@@ -2,30 +2,33 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Auth.css';
- 
+
 const Login = ({ onLoginSuccess }) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const navigate = useNavigate();
- 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCredentials({ ...credentials, [name]: value });
   };
- 
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword); // Toggles between true and false
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
- 
     try {
       const response = await axios.post('/api/auth/login', credentials);
       if (response.status === 200) {
-        // Store the email or a specific username in localStorage
-        const username = credentials.email.split('@')[0]; // You can modify this to use any part of the login details
-        localStorage.setItem('userName', username); // Save username to localStorage
+        const username = credentials.email.split('@')[0];
+        localStorage.setItem('userName', username);
         localStorage.setItem('loggedIn', 'true');
-        onLoginSuccess(); // Trigger the parent component's login success handler
-        navigate('/'); // Redirect to home
+        onLoginSuccess();
+        navigate('/');
       }
     } catch (error) {
       if (error.response?.status === 404) {
@@ -35,10 +38,9 @@ const Login = ({ onLoginSuccess }) => {
       }
     }
   };
- 
- 
+
   const containerStyle = {
-    backgroundImage: `url('/Wildcats.jpg')`, // Retain your original background image
+    backgroundImage: `url('/Wildcats.jpg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh',
@@ -47,7 +49,7 @@ const Login = ({ onLoginSuccess }) => {
     alignItems: 'center',
     flexDirection: 'column',
   };
- 
+
   const formStyle = {
     background: 'rgba(255, 255, 255, 0.9)',
     padding: '30px',
@@ -57,7 +59,7 @@ const Login = ({ onLoginSuccess }) => {
     maxWidth: '400px',
     textAlign: 'center',
   };
- 
+
   const inputStyle = {
     width: '95%',
     padding: '10px',
@@ -65,7 +67,7 @@ const Login = ({ onLoginSuccess }) => {
     borderRadius: '4px',
     border: '1px solid #ccc',
   };
- 
+
   const buttonStyle = {
     width: '100%',
     padding: '10px',
@@ -76,7 +78,7 @@ const Login = ({ onLoginSuccess }) => {
     cursor: 'pointer',
     fontSize: '16px',
   };
- 
+
   const linkButtonStyle = {
     background: 'none',
     border: 'none',
@@ -85,7 +87,7 @@ const Login = ({ onLoginSuccess }) => {
     cursor: 'pointer',
     fontSize: '14px',
   };
- 
+
   return (
     <div style={containerStyle}>
       <form style={formStyle} onSubmit={handleSubmit}>
@@ -100,15 +102,33 @@ const Login = ({ onLoginSuccess }) => {
           onChange={handleInputChange}
           required
         />
-        <input
-          style={inputStyle}
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={credentials.password}
-          onChange={handleInputChange}
-          required
-        />
+        <div style={{ position: 'relative', width: '95%' }}>
+          <input
+            style={inputStyle}
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleInputChange}
+            required
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            style={{
+              position: 'absolute',
+              right: '10px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#007bff',
+            }}
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
         <button style={buttonStyle} type="submit">
           Login
         </button>
@@ -133,5 +153,5 @@ const Login = ({ onLoginSuccess }) => {
     </div>
   );
 };
- 
+
 export default Login;

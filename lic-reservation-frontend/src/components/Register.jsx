@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
- 
+
 const Register = () => {
   const [userDetails, setUserDetails] = useState({
     email: '',
@@ -9,41 +9,43 @@ const Register = () => {
     password: '',
     code: '', // Code entered by the user
   });
+
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
- 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   };
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
- 
+
     // Check if the verification code is correct
     if (userDetails.code !== '12345') {
       setErrorMessage('Invalid verification code. Please try again.');
       return; // Prevent form submission
     }
- 
+
     try {
       await axios.post('/api/auth/register', {
         email: userDetails.email,
         username: userDetails.username,
         password: userDetails.password,
       });
- 
+
       // Save username to localStorage after successful registration
       localStorage.setItem('userName', userDetails.username);
       localStorage.setItem('loggedIn', 'true'); // Set login status to true
- 
+
       navigate('/login'); // Redirect to login after successful registration
     } catch (error) {
       setErrorMessage('Registration failed. Please try again.');
     }
   };
-  
+
   return (
     <div>
       <style>{`
@@ -59,7 +61,7 @@ const Register = () => {
           background-repeat: no-repeat;
           margin: 0;
         }
- 
+
         .auth-form {
           background-color: rgba(255, 255, 255, 0.9);
           padding: 20px;
@@ -69,7 +71,7 @@ const Register = () => {
           width: 500px;
           text-align: center;
         }
- 
+
         .auth-form input {
           width: 95%;
           padding: 10px;
@@ -78,7 +80,7 @@ const Register = () => {
           border-radius: 5px;
           font-size: 16px;
         }
- 
+
         .auth-form button {
           width: 100%;
           padding: 10px;
@@ -89,26 +91,37 @@ const Register = () => {
           font-size: 16px;
           cursor: pointer;
         }
- 
+
         .auth-form button:hover {
           background-color: #0056b3;
         }
- 
+
+        .toggle-password {
+          margin-top: -10px;
+          font-size: 14px;
+          color: #007bff;
+          cursor: pointer;
+        }
+
+        .toggle-password:hover {
+          text-decoration: underline;
+        }
+
         .error-message {
           color: red;
           margin-top: 10px;
         }
- 
+
         .auth-link {
           color: #007bff;
           cursor: pointer;
         }
- 
+
         .auth-link:hover {
           text-decoration: underline;
         }
       `}</style>
- 
+
       <div className="auth-container">
         <form className="auth-form" onSubmit={handleSubmit}>
           <h2>Register</h2>
@@ -129,13 +142,19 @@ const Register = () => {
             required
           />
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'} // Toggle between text and password
             name="password"
             placeholder="Password"
             value={userDetails.password}
             onChange={handleInputChange}
             required
           />
+          <span
+            className="toggle-password"
+            onClick={() => setShowPassword((prev) => !prev)} // Toggle visibility
+          >
+            {showPassword ? 'Hide Password' : 'Show Password'}
+          </span>
           <input
             type="text"
             name="code"
@@ -157,5 +176,5 @@ const Register = () => {
     </div>
   );
 };
- 
+
 export default Register;

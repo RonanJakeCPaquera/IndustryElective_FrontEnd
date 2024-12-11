@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MdEdit, MdDelete } from 'react-icons/md'; // Importing icons
 
 const PaymentMethodList = () => {
     const [paymentMethods, setPaymentMethods] = useState([]);
@@ -27,14 +28,14 @@ const PaymentMethodList = () => {
     };
 
     const handleEdit = (method) => {
-        setEditingMethod(method);
+        setEditingMethod(method.paymentMethodId);
         setUpdatedDetails({
             paymentAmount: method.paymentAmount,
             paymentDate: new Date(method.paymentDate).toISOString().split('T')[0], // Set date in 'YYYY-MM-DD' format for input
         });
     };
 
-    const updatePaymentMethod = async (id, updatedDetails) => {
+    const handleSave = async (id) => {
         await axios.put(`/paymentMethods/updatePaymentMethod/${id}`, updatedDetails);
         fetchPaymentMethods();
         setEditingMethod(null);
@@ -71,53 +72,58 @@ const PaymentMethodList = () => {
                         {paymentMethods.map((method) => (
                             <tr key={method.paymentMethodId}>
                                 <td>{counters[method.paymentMethodId] || 1}</td>
-                                <td>{`₱${method.paymentAmount}`}</td>
-                                <td>{new Date(method.paymentDate).toLocaleDateString()}</td>
                                 <td>
-                                    <button onClick={() => handleEdit(method)}>Edit</button>
-                                    <button onClick={() => deletePaymentMethod(method.paymentMethodId)}>Delete</button>
+                                    {editingMethod === method.paymentMethodId ? (
+                                        <input
+                                            type="number"
+                                            name="paymentAmount"
+                                            value={updatedDetails.paymentAmount}
+                                            onChange={handleChange}
+                                        />
+                                    ) : (
+                                        `₱${method.paymentAmount}`
+                                    )}
+                                </td>
+                                <td>
+                                    {editingMethod === method.paymentMethodId ? (
+                                        <input
+                                            type="date"
+                                            name="paymentDate"
+                                            value={updatedDetails.paymentDate}
+                                            onChange={handleChange}
+                                        />
+                                    ) : (
+                                        new Date(method.paymentDate).toLocaleDateString()
+                                    )}
+                                </td>
+                                <td>
+                                    {editingMethod === method.paymentMethodId ? (
+                                        <>
+                                            <button onClick={() => handleSave(method.paymentMethodId)}>
+                                                Save
+                                            </button>
+                                            <button onClick={() => setEditingMethod(null)}>
+                                                Cancel
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button onClick={() => handleEdit(method)}>
+                                                <MdEdit />
+                                            </button>
+                                            <button
+                                                onClick={() => deletePaymentMethod(method.paymentMethodId)}
+                                            >
+                                                <MdDelete />
+                                            </button>
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-
-            {/* Editing Form */}
-            {editingMethod && (
-                <div>
-                    <h2>Edit Payment Method</h2>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            updatePaymentMethod(editingMethod.paymentMethodId, updatedDetails);
-                        }}
-                    >
-                        <div>
-                            <label>Payment Amount:</label>
-                            <input
-                                type="number"
-                                name="paymentAmount"
-                                value={updatedDetails.paymentAmount}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label>Payment Date:</label>
-                            <input
-                                type="date"
-                                name="paymentDate"
-                                value={updatedDetails.paymentDate}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <button type="submit">Update Payment Method</button>
-                        <button type="button" onClick={() => setEditingMethod(null)}>Cancel</button>
-                    </form>
-                </div>
-            )}
 
             <style jsx>{`
                 .table-container {
@@ -148,17 +154,26 @@ const PaymentMethodList = () => {
                 }
 
                 .equipment-table tr:hover {
-                    background-color: #ddd;
+                    background-color: yellow;
                 }
 
                 button {
                     margin: 0 5px;
                     padding: 5px 10px;
                     cursor: pointer;
+                    background-color: #f2f2f2;
+                    border: none;
+                    border-radius: 3px;
                 }
 
                 button:hover {
                     background-color: #2196F3;
+                    color: white;
+                }
+
+                input {
+                    padding: 5px;
+                    width: 100%;
                 }
             `}</style>
         </div>

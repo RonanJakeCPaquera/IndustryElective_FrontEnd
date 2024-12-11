@@ -6,7 +6,6 @@ import './App.css';
 import CreateStudent from './components/CreateStudent';
 import CreateReservation from './components/CreateReservation';
 import CreateBooking from './components/CreateBooking';
-import BookingList from './components/BookingList';
 import CreatePaymentMethod from './components/CreatePaymentMethod';
 import CreateEquipment from './components/CreateEquipment';
 import Login from './components/Login';
@@ -180,8 +179,9 @@ function App() {
         <header className="header">
         <img src="../logo.png" alt="Logo" style={{ width: '100px', height: 'auto' }} />
           <nav className="nav-buttons">
+          {loggedIn && <span className="user-greeting">Hello, {userName}!</span>}
             <Link to="/">Home</Link>
-            {loggedIn && <span className="user-greeting">Hello, {userName}!</span>}
+           
             {loggedIn && <Link to="/student-management">Booking</Link>}
             {loggedIn && <Link to="/summary">Summary</Link>}
             {!loggedIn && <Link to="/login">Login</Link>}
@@ -221,7 +221,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateBooking />
-                <BookingList />
+           
               </ProtectedRoute>
             }
           />

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MdEdit, MdDelete,  } from 'react-icons/md';
 
 const EquipmentList = () => {
     const [equipment, setEquipment] = useState([]);
     const [counters, setCounters] = useState({});
-    const [editing, setEditing] = useState(null);
-    const [updatedEquipment, setUpdatedEquipment] = useState({
+    const [isEditing, setIsEditing] = useState(null);
+    const [editData, setEditData] = useState({
         name: '',
         quantity: 0,
         type: ''
@@ -31,11 +32,28 @@ const EquipmentList = () => {
         }
     };
 
-    const updateEquipment = async (id, updatedDetails) => {
+    const handleEditClick = (item) => {
+        setIsEditing(item.equipmentId);
+        setEditData({
+            name: item.name,
+            quantity: item.quantity,
+            type: item.type
+        });
+    };
+
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleEditSave = async (id) => {
         try {
-            await axios.put(`/equipments/updateEquipment/${id}`, updatedDetails);
+            await axios.put(`/equipments/updateEquipment/${id}`, editData);
             fetchEquipment();
-            setEditing(null);
+            setIsEditing(null);
         } catch (error) {
             console.error('Error updating equipment:', error);
         }
@@ -48,14 +66,6 @@ const EquipmentList = () => {
         } catch (error) {
             console.error('Error deleting equipment:', error);
         }
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setUpdatedEquipment((prev) => ({
-            ...prev,
-            [name]: value
-        }));
     };
 
     return (
@@ -77,78 +87,70 @@ const EquipmentList = () => {
                         {equipment.map((item) => (
                             <tr key={item.equipmentId}>
                                 <td>{counters[item.equipmentId] || 1}</td>
-                                <td>{item.name}</td>
-                                <td>{item.quantity}</td>
-                                <td>{item.type}</td>
                                 <td>
-                                    <button
-                                        onClick={() => {
-                                            setEditing(item.equipmentId);
-                                            setUpdatedEquipment({
-                                                name: item.name,
-                                                quantity: item.quantity,
-                                                type: item.type
-                                            });
-                                        }}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => deleteEquipment(item.equipmentId)}
-                                    >
-                                        Delete
-                                    </button>
+                                    {isEditing === item.equipmentId ? (
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={editData.name}
+                                            onChange={handleEditChange}
+                                        />
+                                    ) : (
+                                        item.name
+                                    )}
+                                </td>
+                                <td>
+                                    {isEditing === item.equipmentId ? (
+                                        <input
+                                            type="number"
+                                            name="quantity"
+                                            value={editData.quantity}
+                                            onChange={handleEditChange}
+                                        />
+                                    ) : (
+                                        item.quantity
+                                    )}
+                                </td>
+                                <td>
+                                    {isEditing === item.equipmentId ? (
+                                        <input
+                                            type="text"
+                                            name="type"
+                                            value={editData.type}
+                                            onChange={handleEditChange}
+                                        />
+                                    ) : (
+                                        item.type
+                                    )}
+                                </td>
+                                <td>
+                                    {isEditing === item.equipmentId ? (
+                                        <>
+                                            <button onClick={() => handleEditSave(item.equipmentId)}>
+                                                Save
+                                            </button>
+                                            <button onClick={() => setIsEditing(null)}>
+                                                Cancel
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button onClick={() => handleEditClick(item)}>
+                                            <MdEdit />
+                                            </button>
+                                            <button
+                                                onClick={() => deleteEquipment(item.equipmentId)}
+                                            >
+                                                <MdDelete />
+                                            </button>
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-
-            {/* Edit Equipment Form */}
-            {editing && (
-                <div className="edit-form">
-                    <h3>Edit Equipment</h3>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            updateEquipment(editing, updatedEquipment);
-                        }}
-                    >
-                        <div>
-                            <label>Name:</label>
-                            <input
-                                type="text"
-                                name="name"
-                                value={updatedEquipment.name}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div>
-                            <label>Quantity:</label>
-                            <input
-                                type="number"
-                                name="quantity"
-                                value={updatedEquipment.quantity}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div>
-                            <label>Type:</label>
-                            <input
-                                type="text"
-                                name="type"
-                                value={updatedEquipment.type}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <button type="submit">Update Equipment</button>
-                        <button type="button" onClick={() => setEditing(null)}>
-                            Cancel
-                        </button>
-                    </form>
-                </div>
-            )}
 
             <style jsx>{`
                 .table-container {
@@ -179,11 +181,7 @@ const EquipmentList = () => {
                 }
 
                 .equipment-table tr:hover {
-                    background-color: #ddd;
-                }
-
-                .edit-form {
-                    margin-top: 20px;
+                    background-color: yellow;
                 }
 
                 button {
@@ -194,6 +192,11 @@ const EquipmentList = () => {
 
                 button:hover {
                     background-color: #2196F3;
+                }
+
+                input {
+                    padding: 5px;
+                    width: 100%;
                 }
             `}</style>
         </div>

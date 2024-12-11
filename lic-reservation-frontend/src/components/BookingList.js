@@ -35,13 +35,9 @@ const BookingList = () => {
         }
     };
 
-    const updateBooking = async (id, updatedDetails) => {
-        try {
-            await axios.put(`/bookings/updateBooking/${id}`, updatedDetails);
-            fetchBookings(); // Refresh bookings list after updating
-            cancelEdit(); // Exit edit mode
-        } catch (error) {
-            console.error('Error updating booking:', error);
+    const confirmDelete = (id) => {
+        if (window.confirm('Are you sure you want to delete this record?')) {
+            deleteBooking(id);
         }
     };
 
@@ -51,6 +47,22 @@ const BookingList = () => {
             fetchBookings(); // Refresh bookings list after deletion
         } catch (error) {
             console.error('Error deleting booking:', error);
+        }
+    };
+
+    const confirmUpdate = (id, updatedDetails) => {
+        if (window.confirm('Are you sure you want to update this record?')) {
+            updateBooking(id, updatedDetails);
+        }
+    };
+
+    const updateBooking = async (id, updatedDetails) => {
+        try {
+            await axios.put(`/bookings/updateBooking/${id}`, updatedDetails);
+            fetchBookings(); // Refresh bookings list after updating
+            cancelEdit(); // Exit edit mode
+        } catch (error) {
+            console.error('Error updating booking:', error);
         }
     };
 
@@ -138,7 +150,9 @@ const BookingList = () => {
                                         <td>
                                             <button
                                                 className="save-button"
-                                                onClick={() => updateBooking(booking.bookingId, editingBooking)}
+                                                onClick={() =>
+                                                    confirmUpdate(booking.bookingId, editingBooking)
+                                                }
                                             >
                                                 Save
                                             </button>
@@ -165,14 +179,17 @@ const BookingList = () => {
                                             </button>
                                             <button
                                                 className="delete-button"
-                                                onClick={() => deleteBooking(booking.bookingId)}
+                                                onClick={() => confirmDelete(booking.bookingId)}
                                             >
                                                 <MdDelete />
                                             </button>
                                             <button
                                                 className="complete-button"
                                                 onClick={() =>
-                                                    updateBooking(booking.bookingId, { ...booking, status: 'Completed' })
+                                                    confirmUpdate(booking.bookingId, {
+                                                        ...booking,
+                                                        status: 'Completed',
+                                                    })
                                                 }
                                             >
                                                 <MdCheckCircle />
@@ -225,7 +242,7 @@ const BookingList = () => {
                 }
 
                 .booking-table tr:hover {
-                    background-color: #ddd; /* Row hover effect */
+                    background-color: yellow; /* Row hover effect */
                 }
 
                 button {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MdEdit, MdDelete } from 'react-icons/md'; // Importing icons
  
 const ReservationList = () => {
     const [reservations, setReservations] = useState([]);
@@ -151,10 +152,10 @@ const ReservationList = () => {
                                     ) : (
                                         <>
                                             <button onClick={() => startEditing(reservation)}>
-                                                Edit
+                                            <MdEdit />
                                             </button>
                                             <button onClick={() => deleteReservation(reservation.reservationId)}>
-                                                Delete
+                                            <MdDelete />
                                             </button>
                                         </>
                                     )}
@@ -194,7 +195,7 @@ const ReservationList = () => {
                 }
  
                 .reservation-table tr:hover {
-                    background-color: #ddd;
+                    background-color: yellow;
                 }
  
                 button {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MdEdit, MdDelete } from 'react-icons/md'; // Importing icons
 
 const StudentList = () => {
     const [students, setStudents] = useState([]);
@@ -35,6 +36,7 @@ const StudentList = () => {
         if (response.status === 200) {
             fetchStudents(); // Reload the students list
             setEditStudentId(null); // Close the edit form
+            alert('Student updated successfully!'); // Show success message
         }
     };
 
@@ -47,8 +49,11 @@ const StudentList = () => {
     };
 
     const deleteStudent = async (id) => {
-        await axios.delete(`/students/deleteStudent/${id}`);
-        fetchStudents();
+        const response = await axios.delete(`/students/deleteStudent/${id}`);
+        if (response.status === 200) {
+            fetchStudents();
+            alert('Student deleted successfully!'); // Show success message
+        }
     };
 
     return (
@@ -116,8 +121,12 @@ const StudentList = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <button onClick={() => handleEditClick(student.studentId)}>Edit</button>
-                                            <button onClick={() => deleteStudent(student.studentId)}>Delete</button>
+                                            <button onClick={() => handleEditClick(student.studentId)}>
+                                            <MdEdit />
+                                            </button>
+                                            <button onClick={() => deleteStudent(student.studentId)}>
+                                            <MdDelete />
+                                            </button>
                                         </>
                                     )}
                                 </td>
@@ -156,7 +165,7 @@ const StudentList = () => {
                 }
 
                 .student-table tr:hover {
-                    background-color: #ddd;
+                    background-color: yellow;
                 }
 
                 button {
