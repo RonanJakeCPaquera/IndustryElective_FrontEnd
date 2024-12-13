@@ -4,43 +4,61 @@ import axios from 'axios';
 import './Auth.css';
 
 const Login = ({ onLoginSuccess }) => {
+  // State for managing user input credentials (email and password)
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+
+  // State for managing error messages displayed to the user
   const [errorMessage, setErrorMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+
+  // State for toggling password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Hook for navigation between routes
   const navigate = useNavigate();
 
+  // Handles changes in input fields and updates the credentials state
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCredentials({ ...credentials, [name]: value });
   };
 
+  // Toggles the visibility of the password field
   const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword); // Toggles between true and false
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  // Handles form submission for user login
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
+    e.preventDefault(); // Prevents default form submission behavior
+    setErrorMessage(''); // Resets error message
+
     try {
+      // Sends login request to the backend
       const response = await axios.post('/api/auth/login', credentials);
+
       if (response.status === 200) {
+        // Extracts the username from the email and stores it in local storage
         const username = credentials.email.split('@')[0];
         localStorage.setItem('userName', username);
         localStorage.setItem('loggedIn', 'true');
+
+        // Calls the success callback and navigates to the home page
         onLoginSuccess();
         navigate('/');
       }
     } catch (error) {
+      // Handles errors (e.g., invalid credentials or user not registered)
       if (error.response?.status === 404) {
-        navigate('/register');
+        navigate('/register'); // Redirects to registration page if user not found
       } else {
-        setErrorMessage('Invalid email or password');
+        setErrorMessage('Invalid email or password'); // Displays error message
       }
     }
   };
 
+  // Inline styles for various components
   const containerStyle = {
-    backgroundImage: `url('/Wildcats.jpg')`,
+    backgroundImage: `url('/Wildcats.jpg')`, // Background image for the login page
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh',
@@ -51,7 +69,7 @@ const Login = ({ onLoginSuccess }) => {
   };
 
   const formStyle = {
-    background: 'rgba(255, 255, 255, 0.9)',
+    background: 'rgba(255, 255, 255, 0.9)', // Semi-transparent background for the form
     padding: '30px',
     borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
@@ -71,7 +89,7 @@ const Login = ({ onLoginSuccess }) => {
   const buttonStyle = {
     width: '100%',
     padding: '10px',
-    backgroundColor: '#fbbf24',
+    backgroundColor: '#fbbf24', // Yellow button color
     color: 'white',
     border: 'none',
     borderRadius: '4px',
@@ -82,7 +100,7 @@ const Login = ({ onLoginSuccess }) => {
   const linkButtonStyle = {
     background: 'none',
     border: 'none',
-    color: '#007bff',
+    color: '#007bff', // Blue text for links
     textDecoration: 'underline',
     cursor: 'pointer',
     fontSize: '14px',
@@ -92,7 +110,10 @@ const Login = ({ onLoginSuccess }) => {
     <div style={containerStyle}>
       <form style={formStyle} onSubmit={handleSubmit}>
         <h2>Welcome Back!</h2>
+        {/* Displays error message if login fails */}
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        
+        {/* Input field for email */}
         <input
           style={inputStyle}
           type="email"
@@ -102,6 +123,8 @@ const Login = ({ onLoginSuccess }) => {
           onChange={handleInputChange}
           required
         />
+        
+        {/* Input field for password with visibility toggle */}
         <div style={{ position: 'relative', width: '95%' }}>
           <input
             style={inputStyle}
@@ -129,9 +152,13 @@ const Login = ({ onLoginSuccess }) => {
             {showPassword ? 'Hide' : 'Show'}
           </button>
         </div>
+
+        {/* Login button */}
         <button style={buttonStyle} type="submit">
           Login
         </button>
+
+        {/* Link to reset password */}
         <button
           style={linkButtonStyle}
           type="button"
@@ -139,6 +166,8 @@ const Login = ({ onLoginSuccess }) => {
         >
           Forgot Password?
         </button>
+
+        {/* Link to registration page */}
         <p>
           Don’t have an account?{' '}
           <button

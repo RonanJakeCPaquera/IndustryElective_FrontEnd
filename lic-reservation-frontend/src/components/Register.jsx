@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// React and related libraries are imported
+import React, { useState } from 'react'; // useState for managing component state
+import axios from 'axios'; // Axios for making HTTP requests
+import { useNavigate } from 'react-router-dom'; // useNavigate for programmatic navigation
 
 const Register = () => {
+  // State for storing user details
   const [userDetails, setUserDetails] = useState({
     email: '',
     username: '',
@@ -10,39 +12,42 @@ const Register = () => {
     code: '', // Code entered by the user
   });
 
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+  const navigate = useNavigate(); // Hook for navigation
 
+  // Handles changes in input fields and updates the corresponding state
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   };
 
+  // Handles form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
+    e.preventDefault(); // Prevents default form behavior
+    setErrorMessage(''); // Clears any previous error message
 
-    // Check if the verification code is correct
+    // Validates the verification code
     if (userDetails.code !== '12345') {
       setErrorMessage('Invalid verification code. Please try again.');
-      return; // Prevent form submission
+      return; // Stops further execution if the code is incorrect
     }
 
     try {
+      // Sends user details to the server for registration
       await axios.post('/api/auth/register', {
         email: userDetails.email,
         username: userDetails.username,
         password: userDetails.password,
       });
 
-      // Save username to localStorage after successful registration
+      // Saves user data in local storage upon successful registration
       localStorage.setItem('userName', userDetails.username);
-      localStorage.setItem('loggedIn', 'true'); // Set login status to true
+      localStorage.setItem('loggedIn', 'true'); // Marks user as logged in
 
-      navigate('/login'); // Redirect to login after successful registration
+      navigate('/login'); // Redirects to the login page
     } catch (error) {
-      setErrorMessage('Registration failed. Please try again.');
+      setErrorMessage('Registration failed. Please try again.'); // Sets an error message on failure
     }
   };
 
@@ -123,6 +128,7 @@ const Register = () => {
       `}</style>
 
       <div className="auth-container">
+        {/* Registration form */}
         <form className="auth-form" onSubmit={handleSubmit}>
           <h2>Register</h2>
           <input
@@ -142,7 +148,7 @@ const Register = () => {
             required
           />
           <input
-            type={showPassword ? 'text' : 'password'} // Toggle between text and password
+            type={showPassword ? 'text' : 'password'} // Toggles input type between text and password
             name="password"
             placeholder="Password"
             value={userDetails.password}
@@ -151,7 +157,7 @@ const Register = () => {
           />
           <span
             className="toggle-password"
-            onClick={() => setShowPassword((prev) => !prev)} // Toggle visibility
+            onClick={() => setShowPassword((prev) => !prev)} // Toggles password visibility state
           >
             {showPassword ? 'Hide Password' : 'Show Password'}
           </span>
@@ -164,7 +170,7 @@ const Register = () => {
             required
           />
           <button type="submit">Register</button>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Displays error message if any */}
           <p>
             Already have an account?{' '}
             <span className="auth-link" onClick={() => navigate('/login')}>
